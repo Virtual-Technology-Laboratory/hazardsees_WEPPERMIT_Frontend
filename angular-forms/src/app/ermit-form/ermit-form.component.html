@@ -1,0 +1,135 @@
+<div class="container">
+  <div [hidden]="submitted">
+    <h1>ERMiT Form</h1>
+    <form (ngSubmit)="onSubmit()" #ermitForm="ngForm">
+      <div class="form-group">
+        <label for="top_slope">Top Slope (%)</label>
+        <input type="number" class="form-control" id="top_slope" min="0" max="100"
+          required
+          [(ngModel)]="model.top_slope" name="top_slope"
+          #top_slope="ngModel">
+          <div [hidden]="(top_slope.valid || top_slope.pristine) && (top_slope.value <= 100 && top_slope.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="avg_slope">Middle Slope (%)</label>
+        <input type="number" class="form-control" id="avg_slope" min="0" max="100"
+          required
+          [(ngModel)]="model.avg_slope" name="avg_slope"
+          #avg_slope="ngModel">
+          <div [hidden]="(avg_slope.valid || avg_slope.pristine) && (avg_slope.value <= 100 && avg_slope.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="toe_slope">Toe Slope (%)</label>
+        <input type="number" class="form-control" id="toe_slope" min="0" max="100"
+          required
+          [(ngModel)]="model.toe_slope" name="toe_slope"
+          #toe_slope="ngModel">
+          <div [hidden]="(toe_slope.valid || toe_slope.pristine) && (toe_slope.value <= 100 && toe_slope.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="rock_content">Rock Content (%)</label>
+        <input type="number" class="form-control" id="rock_content" min="0" max="50"
+          required
+          [(ngModel)]="model.rock_content" name="rock_content"
+          #rock_content="ngModel">
+          <div [hidden]="(rock_content.valid || rock_content.pristine) && (rock_content.value <= 50 && rock_content.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 50
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="length_ft">Length (ft)</label>
+        <input type="number" class="form-control" id="length_ft" min="0" max="300"
+          required
+          [(ngModel)]="model.length_ft" name="length_ft"
+          #length_ft="ngModel">
+          <div [hidden]="length_ft.valid || length_ft.pristine"
+            class="alert alert-danger">
+            Please specify a length in feet
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="cli_fn">Climate</label>
+        <select class="form-control" id="cli_fn"
+          [(ngModel)]="model.cli_fn" name="cli_fn"
+          required>
+          <option *ngFor="let cli of cli_fn" [value]="cli">{{cli}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="severity">Severity</label>
+        <select class="form-control" id="severity"
+          [(ngModel)]="model.severity" name="severity"
+          required>
+          <option *ngFor="let sev of severity" [value]="sev">{{sev}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="soil_type">Soil Type</label>
+        <select class="form-control" id="soil_type"
+          [(ngModel)]="model.soil_type" name="soil_type"
+          required>
+          <option *ngFor="let soil of soil_type" [value]="soil">{{soil}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="vegetation">Vegetation</label>
+        <select class="form-control" id="vegetation"
+          [(ngModel)]="model.vegetation" name="vegetation"
+          required>
+          <option *ngFor="let veg of vegetation" [value]="veg">{{veg}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pct_grass">Percentage Grass</label>
+        <input type="number" class="form-control" id="pct_grass"
+          [(ngModel)]="model.pct_grass" name="pct_grass" min="0" max="100"
+          #pct_grass="ngModel">
+          <div [hidden]="(pct_grass.valid || pct_grass.pristine) && (pct_grass.value <= 50 && pct_grass.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="pct_shrub">Percentage Shrub</label>
+        <input type="number" class="form-control" id="pct_shrub"
+          [(ngModel)]="model.pct_shrub" name="pct_shrub" min="0" max="100"
+          #pct_shrub="ngModel">
+          <div [hidden]="(pct_shrub.valid || pct_shrub.pristine) && (pct_shrub.value <= 50 && pct_shrub.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="pct_bare">Percentage Bare</label>
+        <input type="number" class="form-control" id="pct_bare"
+          [(ngModel)]="model.pct_bare" name="pct_bare"
+          [value]="100 - (pct_grass.value + pct_shrub.value)"
+          #pct_bare="ngModel"
+          readonly>
+      </div>
+
+      <button type="submit" class="btn btn-success"
+      [disabled]="!ermitForm.form.valid">Submit</button>
+    </form>
+  </div>
+</div>
+
+<div [hidden]="!submitted">
+  <div style="margin: 100px;text-align: center">
+    <img src="https://www.researchgate.net/profile/Todd_Ontl/publication/313189912/figure/fig5/AS:507047345360897@1497900915539/Landscape-heterogeneity-due-to-landscape-position-along-a-hill-slope-and-possible-effects.png"/>
+  </div>
+  <div>
+    <h4><b>JSON:</b> {{diagnostic}}</h4>
+  </div>
+  <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+</div>
