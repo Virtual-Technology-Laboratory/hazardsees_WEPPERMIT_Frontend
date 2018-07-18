@@ -5,23 +5,115 @@ import { Directive } from '@angular/core';
 @Component({
   selector: 'app-ermit-form',
   templateUrl: './ermit-form.component.html',
-  styleUrls: ['./ermit-form.component.css']
+  styleUrls: ['./ermit-form.component.css'],
 })
 
 export class ErmitFormComponent implements OnInit {
 
-  cli_fn = ['BIRMINGHAM WB AP AL', 'BIRMINGHAM WB AP AL', 'DENVER WB AP CO', 'FLAGSTAFF WB AP AZ', 'MOSCOW U OF I ID', 'MOUNT SHASTA CA', 'SEXTON SUMMIT WB OR'];
-  severity = ['High', 'Moderate', 'Low', 'Unburned'];
-  soil_type = ['Clay Loam', 'Silt Loam', 'Sandy Loam', 'Loam'];
-  vegetation = ['Forest', 'Range', 'Chaparral'];
+  objectKeys = Object.keys;
 
-  model = new Ermit(0, 30, 50, 20, 300, 'BIRMINGHAM WB AP AL', 'High', "Loam", "Range", 0, 0, 0);
+// TODO:      I thought through the job flow of how these programs interface and came up with this:
+//            1. use angular to get info from user,
+//            2. communicate data to back-end to send to ERMIT (flask POST),
+//            3. retrieve processed results from ERMIT (flask GET + BS scrape/selenium to run ERMIT),
+//            4. write to JSON (flask),
+//            5. access in WebGL JS file and use to create visual,
+//            6. show hillslope graphic after Angular Form gets submitted (and 2-5 happens),
+//            7. option to go back and edit form (restart process)
+
+  // Mapping what the user can select to the values that ERMiT works with
+  cli_fn =
+    {'BIRMINGHAM WB AP AL': "../climates/al010831",
+    'DENVER WB AP CO': "../climates/wv461570",
+    'FLAGSTAFF WB AP AZ': "../climates/az023010",
+    'MOSCOW U OF I ID': "../climates/id106152",
+    'MOUNT SHASTA CA': "../climates/ca045983",
+    'SEXTON SUMMIT WB OR': "../climates/or357698"};
+
+  severity =
+    {'High': 'h',
+    'Moderate': 'm',
+    'Low': 'l',
+    'Unburned': 'u'};
+
+  soil_type =
+    {'Clay Loam': "clay",
+    'Silt Loam': "silt",
+    'Sandy Loam': "sand",
+    'Loam': "loam"};
+
+  vegetation =
+    {'Forest': "forest",
+    'Range': "range",
+    'Chaparral': "chap"};
+
+  // Had to make these member variables so I would be able to access and change them:
+  // 1. Depending on what vegetation is selected
+  // 2. Customizable to the user regardless of vegetation (but still have % bare = 100% - the other vegetation %)
+
+  static pct_bare = 0;
+  static pct_grass = 0;
+  static pct_shrub = 0;
+  public classReference = ErmitFormComponent;
+
+  model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
 
   submitted = false;
 
   onSubmit() { this.submitted = true; }
 
-  // TODO: Remove this when we're done
+  changePctBare() {
+    ErmitFormComponent.pct_bare = 100 - (ErmitFormComponent.pct_shrub + ErmitFormComponent.pct_grass);
+    this.model.pct_bare = ErmitFormComponent.pct_bare;
+    this.model.pct_grass = ErmitFormComponent.pct_grass;
+    this.model.pct_shrub = ErmitFormComponent.pct_shrub;
+  }
+
+  // Sets the vegetation inputs to a default set of values based on the vegetation selected (e.g. forest, range, etc)
+
+  set_pcts(vegetation) {
+    switch(vegetation) {
+      case "forest":
+        // Updating Angular Display (component class)
+        ErmitFormComponent.pct_bare = 0;
+        // Updating Ermit class public variables itself
+        this.model.pct_bare = 0;
+
+        ErmitFormComponent.pct_grass = 0;
+        this.model.pct_grass = 0;
+
+        ErmitFormComponent.pct_shrub = 0;
+        this.model.pct_shrub = 0;
+        break;
+      case "range":
+        ErmitFormComponent.pct_grass = 75;
+        this.model.pct_grass = 75;
+
+        ErmitFormComponent.pct_shrub = 15;
+        this.model.pct_shrub = 15;
+
+        ErmitFormComponent.pct_bare = 10;
+        this.model.pct_bare = 10;
+        break;
+      case "chap":
+        ErmitFormComponent.pct_grass = 0;
+        this.model.pct_grass = 0;
+
+        ErmitFormComponent.pct_shrub = 80;
+        this.model.pct_shrub = 80;
+
+        ErmitFormComponent.pct_bare = 20;
+        this.model.pct_bare = 20;
+        break;
+      default:
+        console.log("no range selected");
+    }
+    console.log(ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
+    this.model.pct_bare = 10;
+    console.log(this.model.pct_bare);
+  }
+
+  // TODO: just JSON and such
   get diagnostic() { return JSON.stringify(this.model); }
 
   constructor() { }
