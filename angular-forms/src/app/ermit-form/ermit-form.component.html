@@ -62,7 +62,7 @@
         <select class="form-control" id="cli_fn"
           [(ngModel)]="model.cli_fn" name="cli_fn"
           required>
-          <option *ngFor="let cli of cli_fn" [value]="cli">{{cli}}</option>
+          <option *ngFor="let cli of objectKeys(cli_fn)" [value]="cli_fn[cli]">{{cli}}</option>
         </select>
       </div>
       <div class="form-group">
@@ -70,7 +70,7 @@
         <select class="form-control" id="severity"
           [(ngModel)]="model.severity" name="severity"
           required>
-          <option *ngFor="let sev of severity" [value]="sev">{{sev}}</option>
+          <option *ngFor="let sev of objectKeys(severity)" [value]="severity[sev]">{{sev}}</option>
         </select>
       </div>
       <div class="form-group">
@@ -78,23 +78,25 @@
         <select class="form-control" id="soil_type"
           [(ngModel)]="model.soil_type" name="soil_type"
           required>
-          <option *ngFor="let soil of soil_type" [value]="soil">{{soil}}</option>
+          <option *ngFor="let soil of objectKeys(soil_type)" [value]="soil_type[soil]">{{soil}}</option>
         </select>
       </div>
       <div class="form-group">
         <label for="vegetation">Vegetation</label>
         <select class="form-control" id="vegetation"
           [(ngModel)]="model.vegetation" name="vegetation"
+          (ngModelChange)="set_pcts('range')"
           required>
-          <option *ngFor="let veg of vegetation" [value]="veg">{{veg}}</option>
+          <option *ngFor="let veg of objectKeys(vegetation)" [value]="vegetation[veg]">{{veg}}</option>
         </select>
       </div>
       <div class="form-group">
         <label for="pct_grass">Percentage Grass</label>
         <input type="number" class="form-control" id="pct_grass"
-          [(ngModel)]="model.pct_grass" name="pct_grass" min="0" max="100"
+          [(ngModel)]="classReference.pct_grass"
+          (click)="changePctBare()" name="pct_grass" min="0" max="100"
           #pct_grass="ngModel">
-          <div [hidden]="(pct_grass.valid || pct_grass.pristine) && (pct_grass.value <= 50 && pct_grass.value >= 0)"
+          <div [hidden]="(pct_grass.valid || pct_grass.pristine) && (pct_grass.value <= 100 && pct_grass.value >= 0)"
             class="alert alert-danger">
             Please specify a number between 0 and 100
           </div>
@@ -102,9 +104,10 @@
       <div class="form-group">
         <label for="pct_shrub">Percentage Shrub</label>
         <input type="number" class="form-control" id="pct_shrub"
-          [(ngModel)]="model.pct_shrub" name="pct_shrub" min="0" max="100"
+          [(ngModel)]="classReference.pct_shrub"
+          (click)="changePctBare()" name="pct_shrub" min="0" max="100"
           #pct_shrub="ngModel">
-          <div [hidden]="(pct_shrub.valid || pct_shrub.pristine) && (pct_shrub.value <= 50 && pct_shrub.value >= 0)"
+          <div [hidden]="(pct_shrub.valid || pct_shrub.pristine) && (pct_shrub.value <= 100 && pct_shrub.value >= 0)"
             class="alert alert-danger">
             Please specify a number between 0 and 100
           </div>
@@ -112,10 +115,12 @@
       <div class="form-group">
         <label for="pct_bare">Percentage Bare</label>
         <input type="number" class="form-control" id="pct_bare"
-          [(ngModel)]="model.pct_bare" name="pct_bare"
-          [value]="100 - (pct_grass.value + pct_shrub.value)"
-          #pct_bare="ngModel"
-          readonly>
+          [(ngModel)]="classReference.pct_bare" name="pct_bare" min="0" max="100"
+          #pct_bare="ngModel">
+          <div [hidden]="(pct_bare.valid || pct_bare.pristine) && (pct_bare.value <= 100 && pct_bare.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
       </div>
 
       <button type="submit" class="btn btn-success"
