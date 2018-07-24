@@ -85,7 +85,7 @@
         <label for="vegetation">Vegetation</label>
         <select class="form-control" id="vegetation"
           [(ngModel)]="model.vegetation" name="vegetation"
-          (ngModelChange)="set_pcts('range')"
+          (ngModelChange)="set_pcts(model.vegetation)"
           required>
           <option *ngFor="let veg of objectKeys(vegetation)" [value]="vegetation[veg]">{{veg}}</option>
         </select>
@@ -131,9 +131,6 @@
 
 <div [hidden]="!submitted">
   <div style="margin: 100px;text-align: center">
-    <img src="https://www.researchgate.net/profile/Todd_Ontl/publication/313189912/figure/fig5/AS:507047345360897@1497900915539/Landscape-heterogeneity-due-to-landscape-position-along-a-hill-slope-and-possible-effects.png"/>
-  </div>
-  <div>
     <h4><b>JSON:</b> {{diagnostic}}</h4>
   </div>
   <button class="btn btn-primary" (click)="submitted=false">Edit</button>
