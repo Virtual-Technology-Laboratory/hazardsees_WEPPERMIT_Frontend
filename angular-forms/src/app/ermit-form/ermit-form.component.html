@@ -1,5 +1,6 @@
 <div class="container">
-  <div [hidden]="submitted">
+  <!-- <div [hidden]="submitted"> -->
+  <div>
     <h1>ERMiT Form</h1>
     <form (ngSubmit)="onSubmit()" #ermitForm="ngForm">
       <div class="form-group">
@@ -123,15 +124,25 @@
           </div>
       </div>
 
-      <button type="submit" class="btn btn-success"
-      [disabled]="!ermitForm.form.valid">Submit</button>
+      <div class="row">
+        <div class="col-sm-1">
+          <button type="submit" class="btn btn-success"
+          [disabled]="!ermitForm.form.valid">Submit</button>
+        </div>
+        <div class="col-sm-9"></div>
+        <div class="col-sm-2">
+          <div id='loadingmessage'>
+            <img [hidden]="!submitted" src='assets/load.gif'/>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>
 
-<div [hidden]="!submitted">
+<!-- <div [hidden]="!submitted">
   <div style="margin: 100px;text-align: center">
     <h4><b>JSON:</b> {{diagnostic}}</h4>
   </div>
   <button class="btn btn-primary" (click)="submitted=false">Edit</button>
-</div>
+</div> -->
