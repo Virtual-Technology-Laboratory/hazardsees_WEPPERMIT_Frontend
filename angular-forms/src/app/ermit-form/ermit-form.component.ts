@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Ermit } from '../ermit';
 import { Directive } from '@angular/core';
+import * as $ from 'jquery';
+import {API_URL} from '../env';
 
 @Component({
   selector: 'app-ermit-form',
@@ -13,18 +15,19 @@ export class ErmitFormComponent implements OnInit {
   objectKeys = Object.keys;
 
 // TODO:      I thought through the job flow of how these programs interface and came up with this:
-//            1. use angular to get info from user,
-//            2. communicate data to back-end to send to ERMIT (flask POST),
-//            3. retrieve processed results from ERMIT (flask GET + BS scrape/selenium to run ERMIT),
+//            1. X use angular to get info from user,
+//            2. X communicate data to back-end to send to ERMIT (flask POST),
+//            3. X retrieve processed results from ERMIT (selenium to populate and run ERMIT),
 //            4. write to JSON (flask),
 //            5. access in WebGL JS file and use to create visual,
-//            6. show hillslope graphic after Angular Form gets submitted (and 2-5 happens),
+//            6. show hillslope graphic after Angular Form gets submitted (and 2-5 happens, I kind of want to make a progress bar),
 //            7. option to go back and edit form (restart process)
 
   // Mapping what the user can select to the values that ERMiT works with
   cli_fn =
     {'BIRMINGHAM WB AP AL': "../climates/al010831",
-    'DENVER WB AP CO': "../climates/wv461570",
+    'CHARLESTON KAN AP WV': "../climates/wv461570",
+    'DENVER WB AP CO': "../climates/co052220",
     'FLAGSTAFF WB AP AZ': "../climates/az023010",
     'MOSCOW U OF I ID': "../climates/id106152",
     'MOUNT SHASTA CA': "../climates/ca045983",
@@ -60,7 +63,22 @@ export class ErmitFormComponent implements OnInit {
 
   submitted = false;
 
-  onSubmit() { this.submitted = true; }
+  onSubmit() {
+    this.submitted = true;
+      $.ajax({
+        type: 'POST',
+        url: API_URL,
+        data: JSON.stringify(this.model),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (result) {
+          console.log(result);
+        },
+        failure: function (errMsg) {
+          console.log(errMsg);
+        }
+      });
+  }
 
   changePctBare() {
     ErmitFormComponent.pct_bare = 100 - (ErmitFormComponent.pct_shrub + ErmitFormComponent.pct_grass);
@@ -108,9 +126,6 @@ export class ErmitFormComponent implements OnInit {
       default:
         console.log("no range selected");
     }
-    console.log(ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
-    this.model.pct_bare = 10;
-    console.log(this.model.pct_bare);
   }
 
   // TODO: just JSON and such
@@ -118,7 +133,7 @@ export class ErmitFormComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  public ngOnInit()
+  {  }
 
 }
