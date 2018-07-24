@@ -14,14 +14,14 @@ export class ErmitFormComponent implements OnInit {
 
   objectKeys = Object.keys;
 
-// TODO:      I thought through the job flow of how these programs interface and came up with this:
-//            1. X use angular to get info from user,
-//            2. X communicate data to back-end to send to ERMIT (flask POST),
-//            3. X retrieve processed results from ERMIT (selenium to populate and run ERMIT),
-//            4. write to JSON (flask),
-//            5. access in WebGL JS file and use to create visual,
-//            6. show hillslope graphic after Angular Form gets submitted (and 2-5 happens, I kind of want to make a progress bar),
-//            7. option to go back and edit form (restart process)
+  // TODO:      I thought through the job flow of how these programs interface and came up with this:
+  //            1. X use angular to get info from user,
+  //            2. X communicate data to back-end to send to ERMIT (flask POST),
+  //            3. X retrieve processed results from ERMIT (selenium to populate and run ERMIT),
+  //            4. write to JSON (flask),
+  //            5. access in WebGL JS file and use to create visual,
+  //            6. show hillslope graphic after Angular Form gets submitted (and 2-5 happens, I kind of want to make a progress bar),
+  //            7. option to go back and edit form (restart process)
 
   // Mapping what the user can select to the values that ERMiT works with
   cli_fn =
