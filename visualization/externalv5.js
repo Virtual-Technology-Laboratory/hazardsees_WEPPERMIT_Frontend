@@ -1,32 +1,23 @@
-var camera, scene, renderer, geometry, material, mesh;
-var clayTexture, sandyTexture, siltTexture, loamTexture;
-
 var InitDemo= function(){
 	console.log("This is working");
 	//Finds the canvas
 	//Initializes webGL
-
-	clayTexture = new THREE.TextureLoader().load('clay-loam.jpg')
-	sandyTexture = new THREE.TextureLoader().load('sandy-loam.jpg')
-	siltTexture = new THREE.TextureLoader().load('silt-loam.jpg')
-	loamTexture = new THREE.TextureLoader().load('straight-loam.jpg')
-
 	var canvas = document.getElementById("Surface");
 	var gl = canvas.getContext("webgl");
-	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-	camera.position.set( 10, 10, 40 );
+	var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+				camera.position.set( 10, 10, 40 );
 
-	var controls = new THREE.OrbitControls( camera );
-		controls.target.set( 0, 0, 2 );
-		controls.update();
+		var controls = new THREE.OrbitControls( camera );
+				controls.target.set( 0, 0, 2 );
+				controls.update();
 
-	renderer = new THREE.WebGLRenderer({canvas:Surface});
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.appendChild( renderer.domElement );
+		var renderer = new THREE.WebGLRenderer({canvas:Surface});
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
 
-	geometry = new THREE.Geometry();
-	material = new THREE.MeshBasicMaterial({side:THREE.DoubleSide, vertexColors: THREE.FaceColors});
+		var geometry = new THREE.Geometry();
+		var material = new THREE.MeshBasicMaterial({side:THREE.DoubleSide, vertexColors: THREE.FaceColors});
 
 		var bottom = -2;
 
@@ -43,7 +34,7 @@ var InitDemo= function(){
 		var ycoord4 = 2;
 		var ycoord5 = 0;
 
-	geometry.vertices.push(
+		geometry.vertices.push(
 			//0 1 2 3 4
 				new THREE.Vector3( - width/3,ycoord1,depth1),
 				new THREE.Vector3(- width/6,ycoord2,depth2),
