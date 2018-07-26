@@ -10,6 +10,7 @@ import {API_URL} from '../env';
   styleUrls: ['./ermit-form.component.css'],
 })
 
+
 export class ErmitFormComponent implements OnInit {
 
   objectKeys = Object.keys;
@@ -62,9 +63,17 @@ export class ErmitFormComponent implements OnInit {
   model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
 
   submitted = false;
+  ermit_sent = false;
+
+  // TODO: Find a way to call this only once data is RECEIVED from server in ajax post
+  showTrue() {
+    console.log("works");
+    this.submitted = true;
+  }
 
   onSubmit() {
-    this.submitted = true;
+    // this.submitted = true;
+    this.ermit_sent = true;
       $.ajax({
         type: 'POST',
         url: API_URL,
@@ -72,12 +81,13 @@ export class ErmitFormComponent implements OnInit {
         contentType: 'application/json',
         dataType: 'json',
         success: function (result) {
-          console.log(result);
+          console.log('The server returned ' + JSON.stringify(result));
         },
         failure: function (errMsg) {
           console.log(errMsg);
         }
       });
+
   }
 
   changePctBare() {
