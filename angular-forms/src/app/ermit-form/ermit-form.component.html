@@ -1,5 +1,5 @@
 <div class="container">
-  <div [hidden]="submitted">
+  <div [hidden]="classReference.data.length > 0">
   <div>
     <h1>ERMiT Form</h1>
     <form (ngSubmit)="onSubmit()" #ermitForm="ngForm">
@@ -140,9 +140,9 @@
   </div>
 </div>
 
-<div [hidden]="!submitted">
+<div [hidden]="!classReference.data.length > 0">
   <div style="margin: 100px;text-align: center">
-    <h4>Hello world</h4>
+    <h4>{{classReference.data}}</h4>
   </div>
-  <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+  <button class="btn btn-primary" (click)="onEdit()">Edit</button>
 </div>
