@@ -58,21 +58,13 @@ export class ErmitFormComponent implements OnInit {
   static pct_bare = 0;
   static pct_grass = 0;
   static pct_shrub = 0;
+  static data = {};
   public classReference = ErmitFormComponent;
 
   model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
-
-  submitted = false;
   ermit_sent = false;
 
-  // TODO: Find a way to call this only once data is RECEIVED from server in ajax post
-  showTrue() {
-    console.log("works");
-    this.submitted = true;
-  }
-
   onSubmit() {
-    // this.submitted = true;
     this.ermit_sent = true;
       $.ajax({
         type: 'POST',
@@ -82,12 +74,18 @@ export class ErmitFormComponent implements OnInit {
         dataType: 'json',
         success: function (result) {
           console.log('The server returned ' + JSON.stringify(result));
+          ErmitFormComponent.data = JSON.stringify(result);
         },
         failure: function (errMsg) {
           console.log(errMsg);
         }
       });
 
+  }
+
+  onEdit() {
+    ErmitFormComponent.data = {};
+    this.ermit_sent = false;
   }
 
   changePctBare() {
@@ -137,9 +135,6 @@ export class ErmitFormComponent implements OnInit {
         console.log("no range selected");
     }
   }
-
-  // TODO: just JSON and such
-  get diagnostic() { return JSON.stringify(this.model); }
 
   constructor() { }
 
