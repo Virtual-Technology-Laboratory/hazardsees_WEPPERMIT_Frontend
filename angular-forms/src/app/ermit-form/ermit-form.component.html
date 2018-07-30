@@ -1,144 +1,148 @@
-import { Component, OnInit } from '@angular/core';
-import { Ermit } from '../ermit';
-import { Directive } from '@angular/core';
-import * as $ from 'jquery';
-import {API_URL} from '../env';
+<div class="container">
+  <div [hidden]="classReference.data.length > 0">
+  <div>
+    <h1>ERMiT Form</h1>
+    <form (ngSubmit)="onSubmit()" #ermitForm="ngForm">
+      <div class="form-group">
+        <label for="top_slope">Top Slope (%)</label>
+        <input type="number" class="form-control" id="top_slope" min="0" max="100"
+          required
+          [(ngModel)]="model.top_slope" name="top_slope"
+          #top_slope="ngModel">
+          <div [hidden]="(top_slope.valid || top_slope.pristine) && (top_slope.value <= 100 && top_slope.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="avg_slope">Middle Slope (%)</label>
+        <input type="number" class="form-control" id="avg_slope" min="0" max="100"
+          required
+          [(ngModel)]="model.avg_slope" name="avg_slope"
+          #avg_slope="ngModel">
+          <div [hidden]="(avg_slope.valid || avg_slope.pristine) && (avg_slope.value <= 100 && avg_slope.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="toe_slope">Toe Slope (%)</label>
+        <input type="number" class="form-control" id="toe_slope" min="0" max="100"
+          required
+          [(ngModel)]="model.toe_slope" name="toe_slope"
+          #toe_slope="ngModel">
+          <div [hidden]="(toe_slope.valid || toe_slope.pristine) && (toe_slope.value <= 100 && toe_slope.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="rock_content">Rock Content (%)</label>
+        <input type="number" class="form-control" id="rock_content" min="0" max="50"
+          required
+          [(ngModel)]="model.rock_content" name="rock_content"
+          #rock_content="ngModel">
+          <div [hidden]="(rock_content.valid || rock_content.pristine) && (rock_content.value <= 50 && rock_content.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 50
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="length_ft">Length (ft)</label>
+        <input type="number" class="form-control" id="length_ft" min="0" max="300"
+          required
+          [(ngModel)]="model.length_ft" name="length_ft"
+          #length_ft="ngModel">
+          <div [hidden]="length_ft.valid || length_ft.pristine"
+            class="alert alert-danger">
+            Please specify a length in feet
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="cli_fn">Climate</label>
+        <select class="form-control" id="cli_fn"
+          [(ngModel)]="model.cli_fn" name="cli_fn"
+          required>
+          <option *ngFor="let cli of objectKeys(cli_fn)" [value]="cli_fn[cli]">{{cli}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="severity">Severity</label>
+        <select class="form-control" id="severity"
+          [(ngModel)]="model.severity" name="severity"
+          required>
+          <option *ngFor="let sev of objectKeys(severity)" [value]="severity[sev]">{{sev}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="soil_type">Soil Type</label>
+        <select class="form-control" id="soil_type"
+          [(ngModel)]="model.soil_type" name="soil_type"
+          required>
+          <option *ngFor="let soil of objectKeys(soil_type)" [value]="soil_type[soil]">{{soil}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="vegetation">Vegetation</label>
+        <select class="form-control" id="vegetation"
+          [(ngModel)]="model.vegetation" name="vegetation"
+          (ngModelChange)="set_pcts(model.vegetation)"
+          required>
+          <option *ngFor="let veg of objectKeys(vegetation)" [value]="vegetation[veg]">{{veg}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pct_grass">Percentage Grass</label>
+        <input type="number" class="form-control" id="pct_grass"
+          [(ngModel)]="classReference.pct_grass"
+          (click)="changePctBare()" name="pct_grass" min="0" max="100"
+          #pct_grass="ngModel">
+          <div [hidden]="(pct_grass.valid || pct_grass.pristine) && (pct_grass.value <= 100 && pct_grass.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="pct_shrub">Percentage Shrub</label>
+        <input type="number" class="form-control" id="pct_shrub"
+          [(ngModel)]="classReference.pct_shrub"
+          (click)="changePctBare()" name="pct_shrub" min="0" max="100"
+          #pct_shrub="ngModel">
+          <div [hidden]="(pct_shrub.valid || pct_shrub.pristine) && (pct_shrub.value <= 100 && pct_shrub.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="pct_bare">Percentage Bare</label>
+        <input type="number" class="form-control" id="pct_bare"
+          [(ngModel)]="classReference.pct_bare" name="pct_bare" min="0" max="100"
+          #pct_bare="ngModel">
+          <div [hidden]="(pct_bare.valid || pct_bare.pristine) && (pct_bare.value <= 100 && pct_bare.value >= 0)"
+            class="alert alert-danger">
+            Please specify a number between 0 and 100
+          </div>
+      </div>
 
-@Component({
-  selector: 'app-ermit-form',
-  templateUrl: './ermit-form.component.html',
-  styleUrls: ['./ermit-form.component.css'],
-})
+      <div class="row">
+        <div class="col-sm-1">
+          <button type="submit" class="btn btn-success"
+          [disabled]="!ermitForm.form.valid">Submit</button>
+        </div>
+        <div class="col-sm-9"></div>
+        <div class="col-sm-2">
+          <div id='loadingmessage'>
+            <img [hidden]="!ermit_sent" src='assets/load.gif'/>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
-
-export class ErmitFormComponent implements OnInit {
-
-  objectKeys = Object.keys;
-
-  // TODO:      I thought through the job flow of how these programs interface and came up with this:
-  //            1. X use angular to get info from user,
-  //            2. X communicate data to back-end to send to ERMIT (flask POST),
-  //            3. X retrieve processed results from ERMIT (selenium to populate and run ERMIT),
-  //            4. write to JSON (flask),
-  //            5. access in WebGL JS file and use to create visual,
-  //            6. show hillslope graphic after Angular Form gets submitted (and 2-5 happens, I kind of want to make a progress bar),
-  //            7. option to go back and edit form (restart process)
-
-  // Mapping what the user can select to the values that ERMiT works with
-  cli_fn =
-    {'BIRMINGHAM WB AP AL': "../climates/al010831",
-    'CHARLESTON KAN AP WV': "../climates/wv461570",
-    'DENVER WB AP CO': "../climates/co052220",
-    'FLAGSTAFF WB AP AZ': "../climates/az023010",
-    'MOSCOW U OF I ID': "../climates/id106152",
-    'MOUNT SHASTA CA': "../climates/ca045983",
-    'SEXTON SUMMIT WB OR': "../climates/or357698"};
-
-  severity =
-    {'High': 'h',
-    'Moderate': 'm',
-    'Low': 'l',
-    'Unburned': 'u'};
-
-  soil_type =
-    {'Clay Loam': "clay",
-    'Silt Loam': "silt",
-    'Sandy Loam': "sand",
-    'Loam': "loam"};
-
-  vegetation =
-    {'Forest': "forest",
-    'Range': "range",
-    'Chaparral': "chap"};
-
-  // Had to make these member variables so I would be able to access and change them:
-  // 1. Depending on what vegetation is selected
-  // 2. Customizable to the user regardless of vegetation (but still have % bare = 100% - the other vegetation %)
-
-  static pct_bare = 0;
-  static pct_grass = 0;
-  static pct_shrub = 0;
-  static data = {};
-  public classReference = ErmitFormComponent;
-
-  model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
-  ermit_sent = false;
-
-  onSubmit() {
-    this.ermit_sent = true;
-      $.ajax({
-        type: 'POST',
-        url: API_URL,
-        data: JSON.stringify(this.model),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (result) {
-          console.log('The server returned ' + JSON.stringify(result));
-          ErmitFormComponent.data = JSON.stringify(result);
-        },
-        failure: function (errMsg) {
-          console.log(errMsg);
-        }
-      });
-
-  }
-
-  onEdit() {
-    ErmitFormComponent.data = {};
-    this.ermit_sent = false;
-  }
-
-  changePctBare() {
-    ErmitFormComponent.pct_bare = 100 - (ErmitFormComponent.pct_shrub + ErmitFormComponent.pct_grass);
-    this.model.pct_bare = ErmitFormComponent.pct_bare;
-    this.model.pct_grass = ErmitFormComponent.pct_grass;
-    this.model.pct_shrub = ErmitFormComponent.pct_shrub;
-  }
-
-  // Sets the vegetation inputs to a default set of values based on the vegetation selected (e.g. forest, range, etc)
-
-  set_pcts(vegetation) {
-    switch(vegetation) {
-      case "forest":
-        // Updating Angular Display (component class)
-        ErmitFormComponent.pct_bare = 0;
-        // Updating Ermit class public variables itself
-        this.model.pct_bare = 0;
-
-        ErmitFormComponent.pct_grass = 0;
-        this.model.pct_grass = 0;
-
-        ErmitFormComponent.pct_shrub = 0;
-        this.model.pct_shrub = 0;
-        break;
-      case "range":
-        ErmitFormComponent.pct_grass = 75;
-        this.model.pct_grass = 75;
-
-        ErmitFormComponent.pct_shrub = 15;
-        this.model.pct_shrub = 15;
-
-        ErmitFormComponent.pct_bare = 10;
-        this.model.pct_bare = 10;
-        break;
-      case "chap":
-        ErmitFormComponent.pct_grass = 0;
-        this.model.pct_grass = 0;
-
-        ErmitFormComponent.pct_shrub = 80;
-        this.model.pct_shrub = 80;
-
-        ErmitFormComponent.pct_bare = 20;
-        this.model.pct_bare = 20;
-        break;
-      default:
-        console.log("no range selected");
-    }
-  }
-
-  constructor() { }
-
-  public ngOnInit()
-  {  }
-
-}
+<div [hidden]="!classReference.data.length > 0">
+  <div style="margin: 100px;text-align: center">
+    <h4>{{classReference.data}}</h4>
+  </div>
+  <button class="btn btn-primary" (click)="onEdit()">Edit</button>
+</div>
