@@ -140,9 +140,9 @@
   </div>
 </div>
 
-<div [hidden]="!classReference.data.length > 0">
-  <div style="margin: 100px;text-align: center">
-    <h4>{{classReference.data}}</h4>
+<div class="container" [hidden]="!classReference.data.length > 0">
+  <div class="row" style="margin: 100px;text-align: center">
+    <h4 class="col-sm-12">{{classReference.prettified_data}}</h4>
   </div>
   <button class="btn btn-primary" (click)="onEdit()">Edit</button>
 </div>
