@@ -59,6 +59,7 @@ export class ErmitFormComponent implements OnInit {
   static pct_grass = 0;
   static pct_shrub = 0;
   static data = {};
+  static prettified_data = {};
   public classReference = ErmitFormComponent;
 
   model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
@@ -73,7 +74,8 @@ export class ErmitFormComponent implements OnInit {
         contentType: 'application/json',
         dataType: 'json',
         success: function (result) {
-          console.log('The server returned ' + JSON.stringify(result));
+          // console.log('The server returned ' + JSON.stringify(result));
+          ErmitFormComponent.prettified_data = JSON.stringify(result, undefined, 2);
           ErmitFormComponent.data = JSON.stringify(result);
         },
         failure: function (errMsg) {
@@ -85,6 +87,7 @@ export class ErmitFormComponent implements OnInit {
 
   onEdit() {
     ErmitFormComponent.data = {};
+    ErmitFormComponent.prettified_data = {};
     this.ermit_sent = false;
   }
 
