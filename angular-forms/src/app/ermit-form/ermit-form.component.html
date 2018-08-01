@@ -1,5 +1,5 @@
 <div class="container">
-  <div [hidden]="classReference.data.length > 0">
+  <div [hidden]="classReference.prettified_data.length > 0">
   <div>
     <h1>ERMiT Form</h1>
     <form (ngSubmit)="onSubmit()" #ermitForm="ngForm">
@@ -140,9 +140,11 @@
   </div>
 </div>
 
-<div class="container" [hidden]="!classReference.data.length > 0">
+<div class="container" [hidden]="!classReference.prettified_data.length > 0">
   <div class="row" style="margin: 100px;text-align: center">
     <h4 class="col-sm-12">{{classReference.prettified_data}}</h4>
+    <canvas [hidden]="!showSlope" id="line" width="300" height="300" style="margin: 30px 0 auto; display: block;"></canvas>
   </div>
+  <button class="btn btn-primary" (click)="changeLine()">See 2D Hillslope</button>
   <button class="btn btn-primary" (click)="onEdit()">Edit</button>
 </div>
