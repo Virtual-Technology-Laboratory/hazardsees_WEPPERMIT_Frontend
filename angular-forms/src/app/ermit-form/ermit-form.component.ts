@@ -64,6 +64,7 @@ export class ErmitFormComponent implements OnInit {
 
   model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
   ermit_sent = false;
+  showSlope = false;
 
   onSubmit() {
     this.ermit_sent = true;
@@ -76,7 +77,7 @@ export class ErmitFormComponent implements OnInit {
         success: function (result) {
           // console.log('The server returned ' + JSON.stringify(result));
           ErmitFormComponent.prettified_data = JSON.stringify(result, undefined, 2);
-          ErmitFormComponent.data = JSON.stringify(result);
+          ErmitFormComponent.data = JSON.parse(JSON.stringify(result));
         },
         failure: function (errMsg) {
           console.log(errMsg);
@@ -89,6 +90,7 @@ export class ErmitFormComponent implements OnInit {
     ErmitFormComponent.data = {};
     ErmitFormComponent.prettified_data = {};
     this.ermit_sent = false;
+    this.showSlope = false;
   }
 
   changePctBare() {
@@ -139,9 +141,48 @@ export class ErmitFormComponent implements OnInit {
     }
   }
 
+  changeLine() {
+    var xInit = ErmitFormComponent.data["x_coord_init"];
+    var yInit = ErmitFormComponent.data["y_coord_init"];
+    var xTop = ErmitFormComponent.data["x_coord_top"];
+    var yTop = ErmitFormComponent.data["y_coord_top"];
+    var xAvg = ErmitFormComponent.data["x_coord_avg"];
+    var yAvg = ErmitFormComponent.data["y_coord_avg"];
+    var xToe = ErmitFormComponent.data["x_coord_toe"];
+    var yToe = ErmitFormComponent.data["y_coord_toe"];
+    var length = ErmitFormComponent.data["length_ft"];
+    var height = ErmitFormComponent.data["height"];
+
+    console.log(xInit, yInit, xTop, yTop, xAvg, yAvg, xToe, yToe);
+
+    const canvas = <HTMLCanvasElement>document.getElementById('line');
+
+    canvas.width = length + 40;
+    canvas.height = height + 40;
+
+    var c=document.getElementById("line");
+    var ctx=c.getContext("2d");
+    ctx.clearRect(0, 0, line.width, line.height);
+    ctx.beginPath();
+    ctx.moveTo(xInit+20,yInit+20);
+    ctx.lineTo(xTop+20,-1 * yTop+20);
+    ctx.lineTo(xAvg+20,-1 * yAvg+20);
+    ctx.lineTo(xToe+20,-1 * yToe+20);
+    ctx.shadowBlur=20;
+    ctx.shadowColor="black";
+    var gradient=ctx.createLinearGradient(0,0,300,200);
+    gradient.addColorStop("0","brown");
+    gradient.addColorStop("0.5","black");
+    gradient.addColorStop("1.0","gray");
+    ctx.strokeStyle=gradient;
+    ctx.lineWidth=10;
+    ctx.stroke();
+    this.showSlope = true;
+  }
+
   constructor() { }
 
   public ngOnInit()
-  {  }
+  { }
 
 }
