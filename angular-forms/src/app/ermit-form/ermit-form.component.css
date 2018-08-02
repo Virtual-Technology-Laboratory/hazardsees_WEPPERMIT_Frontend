@@ -1,0 +1,72 @@
+.overlayBtn {
+  display: inline-block;
+  margin: 10px;
+}
+.bar {
+  height: 150px;
+  border: 5px solid black;
+  width: 90px;
+  border-radius: 5px 5px 20px 20px;
+  margin: 20px;
+}
+#veg {
+  border:1px solid #000000;
+  margin: 20px;
+}
+#line {
+  width: 250px;
+  height: 250px;
+}
+#sevText {
+  margin: 10px;
+  font-size: 10px;
+}
+#pct_bare_text {
+  color: black;
+  font-size: 10px;
+}
+#pct_grass_text {
+  color: #49796B;
+  font-size: 10px;
+}
+#pct_shrub_text {
+  color: #d2b48c;
+  font-size: 10px;
+}
+#insidePrecipitation {
+  border-radius: 0px 0px 13px 13px;
+  max-height: 140px;
+  width: 80px;
+  height: 50px;
+  background: linear-gradient(#4c4ca6, #000080, #00004c);
+  position: relative;
+  margin-top: 40px;
+  font-size: 12px;
+  color: white;
+}
+#insideRunoff {
+  border-radius: 0px 0px 13px 13px;
+  max-height: 140px;
+  width: 80px;
+  height: 50px;
+  background: linear-gradient(#521515, #421010, #210808);
+  position: relative;
+  margin-top: 40px;
+  font-size: 12px;
+  color: white;
+}
+#insideWinterRunoff {
+  border-radius: 0px 0px 13px 13px;
+  max-height: 140px;
+  width: 80px;
+  height: 50px;
+  background: linear-gradient(#f2f2f2, #cccccc, #A6A6A6);
+  position: relative;
+  margin-top: 40px;
+  font-size: 12px;
+  color: white;
+}
+#precipitationText, #winterRunoffText, #runoffText {
+  padding-top: 5px;
+  margin-bottom: 20px;
+}
