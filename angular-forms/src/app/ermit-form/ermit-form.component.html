@@ -116,7 +116,8 @@
       <div class="form-group">
         <label for="pct_bare">Percentage Bare</label>
         <input type="number" class="form-control" id="pct_bare"
-          [(ngModel)]="classReference.pct_bare" name="pct_bare" min="0" max="100"
+          [(ngModel)]="classReference.pct_bare"
+          (click)="changePctBare()" name="pct_bare" min="0" max="100"
           #pct_bare="ngModel">
           <div [hidden]="(pct_bare.valid || pct_bare.pristine) && (pct_bare.value <= 100 && pct_bare.value >= 0)"
             class="alert alert-danger">
@@ -141,10 +142,47 @@
 </div>
 
 <div class="container" [hidden]="!classReference.prettified_data.length > 0">
-  <div class="row" style="margin: 100px;text-align: center">
-    <h4 class="col-sm-12">{{classReference.prettified_data}}</h4>
-    <canvas [hidden]="!showSlope" id="line" width="300" height="300" style="margin: 30px 0 auto; display: block;"></canvas>
+  <div class="row" style="margin: 50px auto">
+    <canvas></canvas>
   </div>
-  <button class="btn btn-primary" (click)="changeLine()">See 2D Hillslope</button>
-  <button class="btn btn-primary" (click)="onEdit()">Edit</button>
+  <div class="row" style="margin: 50px;text-align: center">
+    <h6 class="col-sm-12">{{classReference.prettified_data}}</h6>
+  </div>
+  <div class="row" style="margin: 50px auto; text-align: center">
+    <div [hidden]="!showSlope">
+    <canvas id="line"></canvas>
+    <i><p id="sevText"></p></i>
+  </div>
+    <div [hidden]="!showPrecipitationOverlay" class="bar">
+      <div id="insidePrecipitation">
+        <p id="precipitationText"></p>
+      </div>
+    </div>
+    <div [hidden]="!showRunoffOverlay" class="bar">
+      <div id="insideRunoff">
+        <p id="runoffText"></p>
+      </div>
+    </div>
+    <div [hidden]="!showWinterRunoffOverlay" class="bar">
+      <div id="insideWinterRunoff">
+        <p id="winterRunoffText"></p>
+      </div>
+    </div>
+    <div style="text-align: center" [hidden]="!showVegOverlay">
+      <canvas id="veg"></canvas>
+      <p id="pct_grass_text"></p>
+      <p id="pct_shrub_text"></p>
+      <p id="pct_bare_text"></p>
+    </div>
+  </div>
+  <div class="row" style="margin: 100px;text-align: center">
+    <div>
+      <button class="overlayBtn btn btn-info" (click)="changeLine()">2D Hillslope</button>
+      <button class="overlayBtn btn btn-info" (click)="waterOverlay()">Annual Precipitation</button>
+      <button class="overlayBtn btn btn-info" (click)="runoffOverlay()">Annual Runoff from Rainfall</button>
+      <button class="overlayBtn btn btn-info" (click)="winterRunoffOverlay()">Annual Snowmelt Runoff</button>
+      <button class="overlayBtn btn btn-info" (click)="vegetationOverlay()">Vegetation</button>
+    </div>
+  </div>
+  <button class="overlayBtn btn btn-primary" (click)="onEdit()">Edit</button>
 </div>
