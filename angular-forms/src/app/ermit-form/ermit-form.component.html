@@ -1,188 +1,72 @@
-<div class="container">
-  <div [hidden]="classReference.prettified_data.length > 0">
-  <div>
-    <h1>ERMiT Form</h1>
-    <form (ngSubmit)="onSubmit()" #ermitForm="ngForm">
-      <div class="form-group">
-        <label for="top_slope">Top Slope (%)</label>
-        <input type="number" class="form-control" id="top_slope" min="0" max="100"
-          required
-          [(ngModel)]="model.top_slope" name="top_slope"
-          #top_slope="ngModel">
-          <div [hidden]="(top_slope.valid || top_slope.pristine) && (top_slope.value <= 100 && top_slope.value >= 0)"
-            class="alert alert-danger">
-            Please specify a number between 0 and 100
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="avg_slope">Middle Slope (%)</label>
-        <input type="number" class="form-control" id="avg_slope" min="0" max="100"
-          required
-          [(ngModel)]="model.avg_slope" name="avg_slope"
-          #avg_slope="ngModel">
-          <div [hidden]="(avg_slope.valid || avg_slope.pristine) && (avg_slope.value <= 100 && avg_slope.value >= 0)"
-            class="alert alert-danger">
-            Please specify a number between 0 and 100
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="toe_slope">Toe Slope (%)</label>
-        <input type="number" class="form-control" id="toe_slope" min="0" max="100"
-          required
-          [(ngModel)]="model.toe_slope" name="toe_slope"
-          #toe_slope="ngModel">
-          <div [hidden]="(toe_slope.valid || toe_slope.pristine) && (toe_slope.value <= 100 && toe_slope.value >= 0)"
-            class="alert alert-danger">
-            Please specify a number between 0 and 100
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="rock_content">Rock Content (%)</label>
-        <input type="number" class="form-control" id="rock_content" min="0" max="50"
-          required
-          [(ngModel)]="model.rock_content" name="rock_content"
-          #rock_content="ngModel">
-          <div [hidden]="(rock_content.valid || rock_content.pristine) && (rock_content.value <= 50 && rock_content.value >= 0)"
-            class="alert alert-danger">
-            Please specify a number between 0 and 50
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="length_ft">Length (ft)</label>
-        <input type="number" class="form-control" id="length_ft" min="0" max="300"
-          required
-          [(ngModel)]="model.length_ft" name="length_ft"
-          #length_ft="ngModel">
-          <div [hidden]="length_ft.valid || length_ft.pristine"
-            class="alert alert-danger">
-            Please specify a length in feet
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="cli_fn">Climate</label>
-        <select class="form-control" id="cli_fn"
-          [(ngModel)]="model.cli_fn" name="cli_fn"
-          required>
-          <option *ngFor="let cli of objectKeys(cli_fn)" [value]="cli_fn[cli]">{{cli}}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="severity">Severity</label>
-        <select class="form-control" id="severity"
-          [(ngModel)]="model.severity" name="severity"
-          required>
-          <option *ngFor="let sev of objectKeys(severity)" [value]="severity[sev]">{{sev}}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="soil_type">Soil Type</label>
-        <select class="form-control" id="soil_type"
-          [(ngModel)]="model.soil_type" name="soil_type"
-          required>
-          <option *ngFor="let soil of objectKeys(soil_type)" [value]="soil_type[soil]">{{soil}}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="vegetation">Vegetation</label>
-        <select class="form-control" id="vegetation"
-          [(ngModel)]="model.vegetation" name="vegetation"
-          (ngModelChange)="set_pcts(model.vegetation)"
-          required>
-          <option *ngFor="let veg of objectKeys(vegetation)" [value]="vegetation[veg]">{{veg}}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="pct_grass">Percentage Grass</label>
-        <input type="number" class="form-control" id="pct_grass"
-          [(ngModel)]="classReference.pct_grass"
-          (click)="changePctBare()" name="pct_grass" min="0" max="100"
-          #pct_grass="ngModel">
-          <div [hidden]="(pct_grass.valid || pct_grass.pristine) && (pct_grass.value <= 100 && pct_grass.value >= 0)"
-            class="alert alert-danger">
-            Please specify a number between 0 and 100
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="pct_shrub">Percentage Shrub</label>
-        <input type="number" class="form-control" id="pct_shrub"
-          [(ngModel)]="classReference.pct_shrub"
-          (click)="changePctBare()" name="pct_shrub" min="0" max="100"
-          #pct_shrub="ngModel">
-          <div [hidden]="(pct_shrub.valid || pct_shrub.pristine) && (pct_shrub.value <= 100 && pct_shrub.value >= 0)"
-            class="alert alert-danger">
-            Please specify a number between 0 and 100
-          </div>
-      </div>
-      <div class="form-group">
-        <label for="pct_bare">Percentage Bare</label>
-        <input type="number" class="form-control" id="pct_bare"
-          [(ngModel)]="classReference.pct_bare"
-          (click)="changePctBare()" name="pct_bare" min="0" max="100"
-          #pct_bare="ngModel">
-          <div [hidden]="(pct_bare.valid || pct_bare.pristine) && (pct_bare.value <= 100 && pct_bare.value >= 0)"
-            class="alert alert-danger">
-            Please specify a number between 0 and 100
-          </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-1">
-          <button type="submit" class="btn btn-success"
-          [disabled]="!ermitForm.form.valid">Submit</button>
-        </div>
-        <div class="col-sm-9"></div>
-        <div class="col-sm-2">
-          <div id='loadingmessage'>
-            <img [hidden]="!ermit_sent" src='assets/load.gif'/>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="container" [hidden]="!classReference.prettified_data.length > 0">
-  <div class="row" style="margin: 50px auto">
-    <canvas></canvas>
-  </div>
-  <div class="row" style="margin: 50px;text-align: center">
-    <h6 class="col-sm-12">{{classReference.prettified_data}}</h6>
-  </div>
-  <div class="row" style="margin: 50px auto; text-align: center">
-    <div [hidden]="!showSlope">
-    <canvas id="line"></canvas>
-    <i><p id="sevText"></p></i>
-  </div>
-    <div [hidden]="!showPrecipitationOverlay" class="bar">
-      <div id="insidePrecipitation">
-        <p id="precipitationText"></p>
-      </div>
-    </div>
-    <div [hidden]="!showRunoffOverlay" class="bar">
-      <div id="insideRunoff">
-        <p id="runoffText"></p>
-      </div>
-    </div>
-    <div [hidden]="!showWinterRunoffOverlay" class="bar">
-      <div id="insideWinterRunoff">
-        <p id="winterRunoffText"></p>
-      </div>
-    </div>
-    <div style="text-align: center" [hidden]="!showVegOverlay">
-      <canvas id="veg"></canvas>
-      <p id="pct_grass_text"></p>
-      <p id="pct_shrub_text"></p>
-      <p id="pct_bare_text"></p>
-    </div>
-  </div>
-  <div class="row" style="margin: 100px;text-align: center">
-    <div>
-      <button class="overlayBtn btn btn-info" (click)="changeLine()">2D Hillslope</button>
-      <button class="overlayBtn btn btn-info" (click)="waterOverlay()">Annual Precipitation</button>
-      <button class="overlayBtn btn btn-info" (click)="runoffOverlay()">Annual Runoff from Rainfall</button>
-      <button class="overlayBtn btn btn-info" (click)="winterRunoffOverlay()">Annual Snowmelt Runoff</button>
-      <button class="overlayBtn btn btn-info" (click)="vegetationOverlay()">Vegetation</button>
-    </div>
-  </div>
-  <button class="overlayBtn btn btn-primary" (click)="onEdit()">Edit</button>
-</div>
+.overlayBtn {
+  display: inline-block;
+  margin: 10px;
+}
+.bar {
+  height: 150px;
+  border: 5px solid black;
+  width: 90px;
+  border-radius: 5px 5px 20px 20px;
+  margin: 20px;
+}
+#veg {
+  border:1px solid #000000;
+  margin: 20px;
+}
+#line {
+  width: 250px;
+  height: 250px;
+}
+#sevText {
+  margin: 10px;
+  font-size: 10px;
+}
+#pct_bare_text {
+  color: black;
+  font-size: 10px;
+}
+#pct_grass_text {
+  color: #49796B;
+  font-size: 10px;
+}
+#pct_shrub_text {
+  color: #d2b48c;
+  font-size: 10px;
+}
+#insidePrecipitation {
+  border-radius: 0px 0px 13px 13px;
+  max-height: 140px;
+  width: 80px;
+  height: 50px;
+  background: linear-gradient(#4c4ca6, #000080, #00004c);
+  position: relative;
+  margin-top: 40px;
+  font-size: 12px;
+  color: white;
+}
+#insideRunoff {
+  border-radius: 0px 0px 13px 13px;
+  max-height: 140px;
+  width: 80px;
+  height: 50px;
+  background: linear-gradient(#521515, #421010, #210808);
+  position: relative;
+  margin-top: 40px;
+  font-size: 12px;
+  color: white;
+}
+#insideWinterRunoff {
+  border-radius: 0px 0px 13px 13px;
+  max-height: 140px;
+  width: 80px;
+  height: 50px;
+  background: linear-gradient(#f2f2f2, #cccccc, #A6A6A6);
+  position: relative;
+  margin-top: 40px;
+  font-size: 12px;
+  color: white;
+}
+#precipitationText, #winterRunoffText, #runoffText {
+  padding-top: 5px;
+  margin-bottom: 20px;
+}
