@@ -65,6 +65,10 @@ export class ErmitFormComponent implements OnInit {
   model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
   ermit_sent = false;
   showSlope = false;
+  showPrecipitationOverlay = false;
+  showRunoffOverlay = false;
+  showWinterRunoffOverlay  = false;
+  showVegOverlay  = false;
 
   onSubmit() {
     this.ermit_sent = true;
@@ -75,7 +79,6 @@ export class ErmitFormComponent implements OnInit {
         contentType: 'application/json',
         dataType: 'json',
         success: function (result) {
-          // console.log('The server returned ' + JSON.stringify(result));
           ErmitFormComponent.prettified_data = JSON.stringify(result, undefined, 2);
           ErmitFormComponent.data = JSON.parse(JSON.stringify(result));
         },
@@ -91,6 +94,10 @@ export class ErmitFormComponent implements OnInit {
     ErmitFormComponent.prettified_data = {};
     this.ermit_sent = false;
     this.showSlope = false;
+    this.showPrecipitationOverlay = false;
+    this.showRunoffOverlay = false;
+    this.showWinterRunoffOverlay  = false;
+    this.showVegOverlay = false;
   }
 
   changePctBare() {
@@ -141,6 +148,63 @@ export class ErmitFormComponent implements OnInit {
     }
   }
 
+  waterOverlay() {
+    var annual_precipitation = ErmitFormComponent.data["annual_precipitation"];
+    var percentagePrecipitation = parseInt(ErmitFormComponent.data["annual_precipitation"])/60;
+    var PrecipitationHeight = 150 * percentagePrecipitation;
+    document.getElementById("insidePrecipitation").style.height = PrecipitationHeight +"px";
+    document.getElementById("insidePrecipitation").style.marginTop = (140 - PrecipitationHeight)+"px";
+    document.getElementById("precipitationText").innerHTML = annual_precipitation + " inches annual precipitation";
+    if (annual_precipitation < 15) {
+      document.getElementById("precipitationText").style.color = "black";
+      document.getElementById("precipitationText").style.paddingTop = 10 + PrecipitationHeight+"px";
+    } else {
+      document.getElementById("precipitationText").style.paddingTop = "5px";
+    }
+    if (this.showPrecipitationOverlay) {
+      this.showPrecipitationOverlay = false;
+    } else {
+      this.showPrecipitationOverlay = true;
+    }
+  }
+  runoffOverlay() {
+    var annual_runoff_rain = ErmitFormComponent.data["annual_runoff_rain"];
+    var percentageRunoff = parseInt(ErmitFormComponent.data["annual_runoff_rain"])/20;
+    var runoffHeight = 150 * percentageRunoff;
+    document.getElementById("insideRunoff").style.height = runoffHeight +"px";
+    document.getElementById("insideRunoff").style.marginTop = (140 - runoffHeight)+"px";
+    document.getElementById("runoffText").innerHTML = annual_runoff_rain + " inches annual runoff from rainfall";
+    if (annual_runoff_rain < 5) {
+      document.getElementById("runoffText").style.color = "black";
+      document.getElementById("runoffText").style.paddingTop = 10 + runoffHeight+"px";
+    } else {
+      document.getElementById("runoffText").style.paddingTop = "5px";
+    }
+    if (this.showRunoffOverlay) {
+      this.showRunoffOverlay = false;
+    } else {
+      this.showRunoffOverlay = true;
+    }
+  }
+  winterRunoffOverlay() {
+    var annual_runoff_winter = ErmitFormComponent.data["annual_runoff_winter"];
+    var percentageWinterRunoff = parseInt(ErmitFormComponent.data["annual_runoff_winter"])/20;
+    var winterRunoffHeight = 150 * percentageWinterRunoff;
+    document.getElementById("insideWinterRunoff").style.height = winterRunoffHeight +"px";
+    document.getElementById("insideWinterRunoff").style.marginTop = (140 - winterRunoffHeight)+"px";
+    document.getElementById("winterRunoffText").innerHTML = annual_runoff_winter + " inches annual runoff from snowmelt";
+    if (annual_runoff_winter < 5) {
+      document.getElementById("winterRunoffText").style.color = "black";
+      document.getElementById("winterRunoffText").style.paddingTop = 10 + winterRunoffHeight+"px";
+    } else {
+      document.getElementById("winterRunoffText").style.paddingTop = "5px";
+    }
+    if (this.showWinterRunoffOverlay) {
+      this.showWinterRunoffOverlay = false;
+    } else {
+      this.showWinterRunoffOverlay = true;
+    }
+  }
   changeLine() {
     var xInit = ErmitFormComponent.data["x_coord_init"];
     var yInit = ErmitFormComponent.data["y_coord_init"];
@@ -152,32 +216,112 @@ export class ErmitFormComponent implements OnInit {
     var yToe = ErmitFormComponent.data["y_coord_toe"];
     var length = ErmitFormComponent.data["length_ft"];
     var height = ErmitFormComponent.data["height"];
-
-    console.log(xInit, yInit, xTop, yTop, xAvg, yAvg, xToe, yToe);
+    var sev = ErmitFormComponent.data["severity"];
 
     const canvas = <HTMLCanvasElement>document.getElementById('line');
+    var ctx=canvas.getContext("2d");
+    var color;
+    var lightcolor;
+    var darkcolor;
 
-    canvas.width = length + 40;
-    canvas.height = height + 40;
+    canvas.width = (parseInt(length) + 40);
+    canvas.height = (height + 40);
 
-    var c=document.getElementById("line");
-    var ctx=c.getContext("2d");
-    ctx.clearRect(0, 0, line.width, line.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    switch(sev) {
+    case "l":
+        color = "#5BC85B";
+        lightcolor = "#E7FFE7";
+        darkcolor = "#137B13";
+        document.getElementById("sevText").innerHTML = "Low Severity";
+        break;
+    case "m":
+        color = "#FFFF5C";
+        lightcolor = "#FEFEBF";
+        darkcolor = " #FF8000";
+        document.getElementById("sevText").innerHTML = "Moderate Severity";
+        break;
+    case "h":
+        color = "#FF0000";
+        lightcolor = "#FFACAC";
+        darkcolor = "#820000";
+        document.getElementById("sevText").innerHTML = "High Severity";
+        break;
+    default:
+        color = "#333333";
+        lightcolor = "#BDBDBD";
+        darkcolor = "black";
+        document.getElementById("sevText").innerHTML = "Unburned";
+      }
+
+    ctx.shadowColor=darkcolor;
     ctx.beginPath();
     ctx.moveTo(xInit+20,yInit+20);
     ctx.lineTo(xTop+20,-1 * yTop+20);
     ctx.lineTo(xAvg+20,-1 * yAvg+20);
     ctx.lineTo(xToe+20,-1 * yToe+20);
     ctx.shadowBlur=20;
-    ctx.shadowColor="black";
     var gradient=ctx.createLinearGradient(0,0,300,200);
-    gradient.addColorStop("0","brown");
-    gradient.addColorStop("0.5","black");
-    gradient.addColorStop("1.0","gray");
+    gradient.addColorStop(0,lightcolor);
+    gradient.addColorStop(0.5,color);
+    gradient.addColorStop(1.0,darkcolor);
     ctx.strokeStyle=gradient;
     ctx.lineWidth=10;
     ctx.stroke();
-    this.showSlope = true;
+    if (this.showSlope) {
+      this.showSlope = false;
+    } else {
+      this.showSlope = true;
+    }
+  }
+
+  vegetationOverlay() {
+    const canvas = <HTMLCanvasElement>document.getElementById('veg');
+    var ctx=canvas.getContext("2d");
+    var pointSize = 5;
+    var pct_grass = parseInt(ErmitFormComponent.data["pct_grass"]);
+    var pct_bare = parseInt(ErmitFormComponent.data["pct_bare"]);
+    var pct_shrub = parseInt(ErmitFormComponent.data["pct_shrub"]);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (pct_grass > 0) {
+      ctx.fillStyle = "#49796B";
+      for (var i = pct_grass * 2; i--; i > 0) {
+        var x = Math.floor(Math.random() * canvas.width);
+        var y = Math.floor(Math.random() * canvas.height);
+        ctx.beginPath();
+        ctx.arc(x, y, pointSize, 0, Math.PI * 2, true);
+        ctx.fill();
+      }
+      document.getElementById("pct_grass_text").innerHTML = pct_grass + "% grass";
+    } else {
+      document.getElementById("pct_grass_text").innerHTML = "0% grass";
+    }
+    if (pct_shrub > 0) {
+      ctx.fillStyle = "#d2b48c";
+      for (var i = pct_shrub * 2; i--; i > 0) {
+        var x = Math.floor(Math.random() * canvas.width);
+        var y = Math.floor(Math.random() * canvas.height);
+        ctx.beginPath();
+        ctx.arc(x, y, pointSize, 0, Math.PI * 2, true);
+        ctx.fill();
+      }
+      document.getElementById("pct_shrub_text").innerHTML = pct_shrub + "% shrub";
+    } else {
+        document.getElementById("pct_shrub_text").innerHTML = "0% shrub";
+    }
+    if (pct_bare > 0) {
+      document.getElementById("pct_bare_text").innerHTML = pct_bare + "% bare";
+    } else {
+      document.getElementById("pct_bare_text").innerHTML = "0% bare";
+    }
+
+    if (this.showVegOverlay) {
+      this.showVegOverlay = false;
+    } else {
+      this.showVegOverlay = true;
+    }
   }
 
   constructor() { }
