@@ -174,8 +174,8 @@ export class ErmitFormComponent implements OnInit {
     var runoffHeight = 150 * percentageRunoff;
     document.getElementById("insideRunoff").style.height = runoffHeight +"px";
     document.getElementById("insideRunoff").style.marginTop = (140 - runoffHeight)+"px";
-    document.getElementById("runoffText").innerHTML = annual_runoff_rain + " inches annual runoff from rainfall";
-    if (annual_runoff_rain < 10) {
+    document.getElementById("runoffText").innerHTML = annual_runoff_rain + " inches annual runoff (rainfall)";
+    if (annual_runoff_rain < 5) {
       document.getElementById("runoffText").style.color = "black";
       document.getElementById("runoffText").style.paddingTop = 10 + runoffHeight+"px";
     } else {
@@ -190,11 +190,11 @@ export class ErmitFormComponent implements OnInit {
   }
   winterRunoffOverlay() {
     var annual_runoff_winter = ErmitFormComponent.data["annual_runoff_winter"];
-    var percentageWinterRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_winter"])/12;
+    var percentageWinterRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_winter"])/15;
     var winterRunoffHeight = 150 * percentageWinterRunoff;
     document.getElementById("insideWinterRunoff").style.height = winterRunoffHeight +"px";
     document.getElementById("insideWinterRunoff").style.marginTop = (140 - winterRunoffHeight)+"px";
-    document.getElementById("winterRunoffText").innerHTML = annual_runoff_winter + " inches annual runoff from snowmelt";
+    document.getElementById("winterRunoffText").innerHTML = annual_runoff_winter + " inches annual runoff (snowmelt)";
     if (annual_runoff_winter < 5) {
       document.getElementById("winterRunoffText").style.color = "black";
       document.getElementById("winterRunoffText").style.paddingTop = 10 + winterRunoffHeight+"px";
