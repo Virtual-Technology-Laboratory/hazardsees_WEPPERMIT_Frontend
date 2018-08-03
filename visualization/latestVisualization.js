@@ -1,3 +1,6 @@
+
+//var hillslopeData = {'top_slope': '0', 'avg_slope': '30', 'toe_slope': '20', 'length_ft': '300', 'cli_fn': '../climates/or357698', 'severity': 'l', 'soil_type': 'loam', 'vegetation': 'forest', 'rock_content': '20', 'pct_grass': '0', 'pct_shrub': '80', 'annual_precipitation': '35', 'annual_runoff_rain': '2.1', 'annual_runoff_winter': '0.76', 'storm_number': '11916', 'rain_events': '710', 'winter_events': '199', 'prob_sediment_yield_exceeded': '20', 'height': 132.0336987656501, 'x_coord_init': 0, 'y_coord_init': 0, 'x_coord_top': 30.0, 'y_coord_top': 0.0, 'x_coord_avg': 270.0, 'y_coord_avg': -122.29, 'x_coord_toe': 300.0, 'y_coord_toe': -132.03}
+//console.log(localStorage.getItem("hillslopeData"));
 var inputData = localStorage.getItem("hillslopeData");
 var hillslopeData = JSON.parse(inputData);
 var hillslopeDataOld = hillslopeData;
@@ -83,10 +86,10 @@ var gl = canvas.getContext("webgl");
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-	camera.position.set( 100, 100, 400 );
+	camera.position.set( 300, 50, 400 );
 //Orbitcontrol allows the user to move the camera w/ their mouse
 var controls = new THREE.OrbitControls( camera );
-	controls.target.set( 0, 0, 2 );
+	controls.target.set( 100, -100, 2 );
 	controls.update();
 
 var renderer = new THREE.WebGLRenderer({canvas:Surface});
@@ -208,12 +211,10 @@ var createForest = function(){
 	var treeMaterial = new THREE.MeshBasicMaterial( {color: 0x005621} );
 	var testMaterial = new THREE.MeshBasicMaterial( {color: 0xc10000} );
 
-	var exvalue = (ex2 + ex3) - (ex2 + ex3)/3;
-
 	var ygeometry1 = new THREE.CylinderGeometry(2, 10, 40, 32 );
 	var cylinder1 = new THREE.Mesh( ygeometry1, treeMaterial );
 	scene.add( cylinder1 );
-	cylinder1.position.set(ex3,why3 * 0.8, depth4/2);
+	cylinder1.position.set(ex3 * 0.9,why3*0.8, depth4 * 0.6);
 
 	var ygeometry2 = new THREE.CylinderGeometry(2, 20, 50, 32 );
 	var cylinder2 = new THREE.Mesh( ygeometry2, treeMaterial );
@@ -233,12 +234,12 @@ var createForest = function(){
 	var ygeometry5 = new THREE.CylinderGeometry(2, 20, 50, 32 );
 	var cylinder5 = new THREE.Mesh( ygeometry5, treeMaterial );
 	scene.add( cylinder5 );
-	cylinder5.position.set(exvalue,why3 * 0.7,depth2/2);
+	cylinder5.position.set((ex2 + ex3) - (ex2 + ex3)*0.4,why3 * 0.6,depth2/2);
 
 	var ygeometry6 = new THREE.CylinderGeometry(2, 20, 50, 32 );
 	var cylinder6 = new THREE.Mesh( ygeometry6, treeMaterial );
 	scene.add( cylinder6 );
-	cylinder6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.8,-depth/2);
+	cylinder6.position.set(((ex2 + ex3) - (ex2 + ex3)/3 + ex3)/2,(why1 + why4) * 0.8,-depth/2);
 };
 
 var createRange = function(){
@@ -315,6 +316,7 @@ var createChaparral = function(){
 	shrub6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.8,-depth/2);
 };
 
+var updateShapeyShapes = function(){
 //determines which shape-creation function to call & calls it
 if(vegetationType === 'forest'){
 	createForest();
@@ -325,6 +327,9 @@ if(vegetationType === 'forest'){
 }else{
 	console.log('404 not found');
 }
+};
+
+
 //self explanatory
 var animate = function () {
 	inputData = localStorage.getItem("hillslopeData");
@@ -332,7 +337,7 @@ var animate = function () {
 
 	if(JSON.stringify(hillslopeDataOld) != JSON.stringify(hillslopeData)){
 		updateData();
-		
+		updateShapeyShapes();
 		object.geometry.verticesNeedUpdate = true;
 		object.geometry.elementsNeedUpdate = true;
 		object.material.needsUpdate = true;
