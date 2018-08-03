@@ -150,16 +150,17 @@ export class ErmitFormComponent implements OnInit {
 
   waterOverlay() {
     var annual_precipitation = ErmitFormComponent.data["annual_precipitation"];
-    var percentagePrecipitation = parseInt(ErmitFormComponent.data["annual_precipitation"])/60;
+    var percentagePrecipitation = parseFloat(ErmitFormComponent.data["annual_precipitation"])/60;
     var PrecipitationHeight = 150 * percentagePrecipitation;
     document.getElementById("insidePrecipitation").style.height = PrecipitationHeight +"px";
     document.getElementById("insidePrecipitation").style.marginTop = (140 - PrecipitationHeight)+"px";
     document.getElementById("precipitationText").innerHTML = annual_precipitation + " inches annual precipitation";
-    if (annual_precipitation < 15) {
+    if (annual_precipitation < 20) {
       document.getElementById("precipitationText").style.color = "black";
       document.getElementById("precipitationText").style.paddingTop = 10 + PrecipitationHeight+"px";
     } else {
       document.getElementById("precipitationText").style.paddingTop = "5px";
+      document.getElementById("precipitationText").style.color = "white";
     }
     if (this.showPrecipitationOverlay) {
       this.showPrecipitationOverlay = false;
@@ -169,16 +170,17 @@ export class ErmitFormComponent implements OnInit {
   }
   runoffOverlay() {
     var annual_runoff_rain = ErmitFormComponent.data["annual_runoff_rain"];
-    var percentageRunoff = parseInt(ErmitFormComponent.data["annual_runoff_rain"])/20;
+    var percentageRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_rain"])/17;
     var runoffHeight = 150 * percentageRunoff;
     document.getElementById("insideRunoff").style.height = runoffHeight +"px";
     document.getElementById("insideRunoff").style.marginTop = (140 - runoffHeight)+"px";
     document.getElementById("runoffText").innerHTML = annual_runoff_rain + " inches annual runoff from rainfall";
-    if (annual_runoff_rain < 5) {
+    if (annual_runoff_rain < 10) {
       document.getElementById("runoffText").style.color = "black";
       document.getElementById("runoffText").style.paddingTop = 10 + runoffHeight+"px";
     } else {
       document.getElementById("runoffText").style.paddingTop = "5px";
+      document.getElementById("runoffText").style.color = "white";
     }
     if (this.showRunoffOverlay) {
       this.showRunoffOverlay = false;
@@ -188,7 +190,7 @@ export class ErmitFormComponent implements OnInit {
   }
   winterRunoffOverlay() {
     var annual_runoff_winter = ErmitFormComponent.data["annual_runoff_winter"];
-    var percentageWinterRunoff = parseInt(ErmitFormComponent.data["annual_runoff_winter"])/20;
+    var percentageWinterRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_winter"])/12;
     var winterRunoffHeight = 150 * percentageWinterRunoff;
     document.getElementById("insideWinterRunoff").style.height = winterRunoffHeight +"px";
     document.getElementById("insideWinterRunoff").style.marginTop = (140 - winterRunoffHeight)+"px";
@@ -198,6 +200,7 @@ export class ErmitFormComponent implements OnInit {
       document.getElementById("winterRunoffText").style.paddingTop = 10 + winterRunoffHeight+"px";
     } else {
       document.getElementById("winterRunoffText").style.paddingTop = "5px";
+      document.getElementById("winterRunoffText").style.color = "white";
     }
     if (this.showWinterRunoffOverlay) {
       this.showWinterRunoffOverlay = false;
