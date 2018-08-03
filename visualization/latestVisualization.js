@@ -236,7 +236,7 @@ var createForest = function(){
 	var ygeometry6 = new THREE.CylinderGeometry(2, 20, 50, 32 );
 	var cylinder6 = new THREE.Mesh( ygeometry6, treeMaterial );
 	scene.add( cylinder6 );
-	cylinder6.position.set(((ex2 + ex3) - (ex2 + ex3)/3 + ex3)/2,(why1 + why4) * 0.8,-depth/2);
+	cylinder6.position.set(((ex2 + ex3) - (ex2 + ex3)/3 + ex3)/2,(why1 + why4) * 0.7,-depth/2);
 };
 
 var createRange = function(){
@@ -273,7 +273,7 @@ var createRange = function(){
 	var ygeometry6 = new THREE.CylinderGeometry( 2, 20, 50, 32 );
 	var cylinder6 = new THREE.Mesh( ygeometry6, treeMaterial );
 	scene.add( cylinder6 );
-	cylinder6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.8,-depth/2);
+	cylinder6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.7,-depth/2);
 };
 
 var createChaparral = function(){
@@ -310,7 +310,7 @@ var createChaparral = function(){
 	var sixthShrub = new THREE.SphereGeometry( 10,10,10 );
 	var shrub6 = new THREE.Mesh( sixthShrub, testMaterial );
 	scene.add( shrub6 );
-	shrub6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.8,-depth/2);
+	shrub6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.7,-depth/2);
 };
 
 var updateShapeyShapes = function(){
