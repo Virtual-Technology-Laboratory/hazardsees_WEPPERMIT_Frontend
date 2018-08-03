@@ -1,6 +1,3 @@
-
-//var hillslopeData = {'top_slope': '0', 'avg_slope': '30', 'toe_slope': '20', 'length_ft': '300', 'cli_fn': '../climates/or357698', 'severity': 'l', 'soil_type': 'loam', 'vegetation': 'forest', 'rock_content': '20', 'pct_grass': '0', 'pct_shrub': '80', 'annual_precipitation': '35', 'annual_runoff_rain': '2.1', 'annual_runoff_winter': '0.76', 'storm_number': '11916', 'rain_events': '710', 'winter_events': '199', 'prob_sediment_yield_exceeded': '20', 'height': 132.0336987656501, 'x_coord_init': 0, 'y_coord_init': 0, 'x_coord_top': 30.0, 'y_coord_top': 0.0, 'x_coord_avg': 270.0, 'y_coord_avg': -122.29, 'x_coord_toe': 300.0, 'y_coord_toe': -132.03}
-//console.log(localStorage.getItem("hillslopeData"));
 var inputData = localStorage.getItem("hillslopeData");
 var hillslopeData = JSON.parse(inputData);
 var hillslopeDataOld = hillslopeData;
