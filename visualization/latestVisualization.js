@@ -308,7 +308,7 @@ var createChaparral = function(){
 	shrub5.position.set(exvalue,why3 * 0.7,depth2/2);
 
 	var sixthShrub = new THREE.SphereGeometry( 10,10,10 );
-	var shrub6 = new THREE.Mesh( sixthShrub, testMaterial );
+	var shrub6 = new THREE.Mesh( sixthShrub, shrubMaterial );
 	scene.add( shrub6 );
 	shrub6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.7,-depth/2);
 };
