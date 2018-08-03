@@ -170,7 +170,7 @@ export class ErmitFormComponent implements OnInit {
   }
   runoffOverlay() {
     var annual_runoff_rain = ErmitFormComponent.data["annual_runoff_rain"];
-    var percentageRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_rain"])/17;
+    var percentageRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_rain"])/16.5;
     var runoffHeight = 150 * percentageRunoff;
     document.getElementById("insideRunoff").style.height = runoffHeight +"px";
     document.getElementById("insideRunoff").style.marginTop = (140 - runoffHeight)+"px";
