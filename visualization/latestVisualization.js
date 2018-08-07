@@ -369,8 +369,7 @@ var updateShapeyShapes = function(){
 		scene.remove( rshrub3 );
 		scene.remove( rshrub4 );
 		scene.remove( rcylinder6 );	
-}
-
+	
 	if(vegetationType === 'forest'){
 		createForest();
 	}else if( vegetationType === 'range'){
