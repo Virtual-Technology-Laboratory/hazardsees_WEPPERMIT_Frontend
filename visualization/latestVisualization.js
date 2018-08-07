@@ -203,38 +203,60 @@ var object = new THREE.Mesh(geometry, material);
 scene.add(object);
 object.geometry.verticesNeedUpdate = true;
 
+
+var cylinder1,
+cylinder2,
+cylinder3,
+cylinder4,
+cylinder5,
+cylinder6;
+
+var shrub1, 
+shrub2, 
+shrub3, 
+shrub4, 
+shrub5,
+shrub6; 
+
+var rshrub1, 
+rshrub2,
+rcylinder3, 
+rshrub3,
+rshrub4,
+rcylinder6;	
+
 //creates the functions which create the little shapes that compose 'vegetation'
 var createForest = function(){
 	var treeMaterial = new THREE.MeshBasicMaterial( {color: 0x005621} );
 	var testMaterial = new THREE.MeshBasicMaterial( {color: 0xc10000} );
 
 	var ygeometry1 = new THREE.CylinderGeometry(2, 10, 40, 32 );
-	var cylinder1 = new THREE.Mesh( ygeometry1, treeMaterial );
+	cylinder1 = new THREE.Mesh( ygeometry1, treeMaterial );
 	scene.add( cylinder1 );
 	cylinder1.position.set(ex3 * 0.9,why3*0.8, depth4 * 0.6);
 
 	var ygeometry2 = new THREE.CylinderGeometry(2, 20, 50, 32 );
-	var cylinder2 = new THREE.Mesh( ygeometry2, treeMaterial );
+	cylinder2 = new THREE.Mesh( ygeometry2, treeMaterial );
 	scene.add( cylinder2 );
 	cylinder2.position.set((ex1 + ex2) * .9,why1,-depth3/2);
 
 	var ygeometry3 = new THREE.CylinderGeometry(2, 20, 50, 32 );
-	var cylinder3 = new THREE.Mesh( ygeometry3, treeMaterial );
+	cylinder3 = new THREE.Mesh( ygeometry3, treeMaterial );
 	scene.add( cylinder3 );
 	cylinder3.position.set(ex2 * 3,why3 - (3/4)* why3,depth1);
 
 	var ygeometry4 = new THREE.CylinderGeometry(2, 20, 50, 32 );
-	var cylinder4 = new THREE.Mesh( ygeometry4, treeMaterial );
+	cylinder4 = new THREE.Mesh( ygeometry4, treeMaterial );
 	scene.add( cylinder4 );
 	cylinder4.position.set((ex2 + ex3)/2, (why2 + why3)/2, -depth/4);
 
 	var ygeometry5 = new THREE.CylinderGeometry(2, 20, 50, 32 );
-	var cylinder5 = new THREE.Mesh( ygeometry5, treeMaterial );
+	cylinder5 = new THREE.Mesh( ygeometry5, treeMaterial );
 	scene.add( cylinder5 );
 	cylinder5.position.set((ex2 + ex3) - (ex2 + ex3)*0.4,why3 * 0.6,depth2/2);
 
 	var ygeometry6 = new THREE.CylinderGeometry(2, 20, 50, 32 );
-	var cylinder6 = new THREE.Mesh( ygeometry6, treeMaterial );
+	cylinder6 = new THREE.Mesh( ygeometry6, treeMaterial );
 	scene.add( cylinder6 );
 	cylinder6.position.set(((ex2 + ex3) - (ex2 + ex3)/3 + ex3)/2,(why1 + why4) * 0.7,-depth/2);
 };
@@ -246,32 +268,32 @@ var createRange = function(){
 	var exvalue = (ex2 + ex3) - (ex2 + ex3)/3;
 
 	var shrubGeometry1 = new THREE.SphereGeometry( 10,10,10 );
-	var shrub1 = new THREE.Mesh( shrubGeometry1, shrubMaterial );
+	shrub1 = new THREE.Mesh( shrubGeometry1, shrubMaterial );
 	scene.add( shrub1 );
 	shrub1.position.set(ex3,why3, depth4/2);
 
 	var shrubGeometry2 =  new THREE.SphereGeometry( 10,10,10 );
-	var shrub2  = new THREE.Mesh( shrubGeometry2,shrubMaterial  );
+	shrub2  = new THREE.Mesh( shrubGeometry2,shrubMaterial  );
 	scene.add( shrub2 );
 	shrub2 .position.set((ex1 + ex2)/2,why1,-depth3/2);
 
 	var treeGeometry3 = new THREE.CylinderGeometry(2, 20, 50, 32 );
-	var cylinder3 = new THREE.Mesh( treeGeometry3, treeMaterial );
+	cylinder3 = new THREE.Mesh( treeGeometry3, treeMaterial );
 	scene.add( cylinder3 );
 	cylinder3.position.set(ex2 * 3,why3 - (3/4)* why3,depth1);
 
 	var shrubGeometry4 = new THREE.SphereGeometry( 10,10,10 );
-	var shrub3 = new THREE.Mesh( shrubGeometry4, shrubMaterial );
+	shrub3 = new THREE.Mesh( shrubGeometry4, shrubMaterial );
 	scene.add( shrub3 );
 	shrub3.position.set((ex2 + ex3)/2, (why2 + why3)/2, -depth/4);
 
 	var shrubGeometry5 = new THREE.SphereGeometry( 10,10,10 );
-	var shrub4 = new THREE.Mesh( shrubGeometry5, shrubMaterial );
+	shrub4 = new THREE.Mesh( shrubGeometry5, shrubMaterial );
 	scene.add( shrub4 );
 	shrub4.position.set(exvalue,why3 * 0.7,depth2/2);
 
 	var ygeometry6 = new THREE.CylinderGeometry( 2, 20, 50, 32 );
-	var cylinder6 = new THREE.Mesh( ygeometry6, treeMaterial );
+	cylinder6 = new THREE.Mesh( ygeometry6, treeMaterial );
 	scene.add( cylinder6 );
 	cylinder6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.7,-depth/2);
 };
@@ -283,37 +305,37 @@ var createChaparral = function(){
 	var exvalue = (ex2 + ex3) - (ex2 + ex3)/3;
 
 	var firstShrub = new THREE.SphereGeometry(  10,10,10 );
-	var shrub1 = new THREE.Mesh( firstShrub, shrubMaterial );
+	shrub1 = new THREE.Mesh( firstShrub, shrubMaterial );
 	scene.add( shrub1 );
 	shrub1.position.set(ex3,why3, depth4/2);
 
 	var secondShrub =  new THREE.SphereGeometry(10,10,10);
-	var shrub2  = new THREE.Mesh( secondShrub,shrubMaterial  );
+	shrub2  = new THREE.Mesh( secondShrub,shrubMaterial  );
 	scene.add( shrub2 );
 	shrub2 .position.set((ex1 + ex2)/2,why1,-depth3/2);
 
 	var thirdShrub = new THREE.SphereGeometry( 10,10,10 );
-	var shrub3 = new THREE.Mesh( thirdShrub, shrubMaterial);
+	shrub3 = new THREE.Mesh( thirdShrub, shrubMaterial);
 	scene.add( shrub3 );
 	shrub3.position.set(ex2 * 3,why3 - (3/4)* why3,depth1);
 
 	var fourthShrub = new THREE.SphereGeometry( 10,10,10 );
-	var shrub4 = new THREE.Mesh( fourthShrub, shrubMaterial );
+	shrub4 = new THREE.Mesh( fourthShrub, shrubMaterial );
 	scene.add( shrub4 );
 	shrub4.position.set((ex2 + ex3)/2, (why2 + why3)/2, -depth/4);
 		
 	var fifthShrub= new THREE.SphereGeometry( 10,10,10 );
-	var shrub5 = new THREE.Mesh( fifthShrub, shrubMaterial );
+	shrub5 = new THREE.Mesh( fifthShrub, shrubMaterial );
 	scene.add( shrub5 );
 	shrub5.position.set(exvalue,why3 * 0.7,depth2/2);
 
 	var sixthShrub = new THREE.SphereGeometry( 10,10,10 );
-	var shrub6 = new THREE.Mesh( sixthShrub, shrubMaterial );
+	shrub6 = new THREE.Mesh( sixthShrub, shrubMaterial );
 	scene.add( shrub6 );
 	shrub6.position.set((exvalue + ex3)/2,(why1 + why4) * 0.7,-depth/2);
 };
 
-var updateShapeyShapes = function(){
+
 //determines which shape-creation function to call & calls it
 if(vegetationType === 'forest'){
 	createForest();
@@ -324,8 +346,42 @@ if(vegetationType === 'forest'){
 }else{
 	console.log('404 not found');
 }
-};
 
+var updateShapeyShapes = function(){
+
+		scene.remove( cylinder1 );
+		scene.remove( cylinder2 );
+		scene.remove( cylinder3 );
+		scene.remove( cylinder4 );
+		scene.remove( cylinder5 );
+		scene.remove( cylinder6 );
+
+		scene.remove( shrub1 );
+		scene.remove( shrub2 );
+		scene.remove( shrub3 );
+		scene.remove( shrub4 );
+		scene.remove( shrub5 );
+		scene.remove( shrub6 );
+
+		scene.remove( rshrub1 );
+		scene.remove( rshrub2 );
+		scene.remove( rcylinder3 );
+		scene.remove( rshrub3 );
+		scene.remove( rshrub4 );
+		scene.remove( rcylinder6 );	
+}
+
+	if(vegetationType === 'forest'){
+		createForest();
+	}else if( vegetationType === 'range'){
+		createRange();
+	}else if( vegetationType === 'chap'){
+		createChaparral();
+	}else{
+		console.log('404 not found');
+	}
+	console.log("the shapey-shapes ran");
+};
 
 //self explanatory
 var animate = function () {
