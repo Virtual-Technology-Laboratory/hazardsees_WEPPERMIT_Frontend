@@ -3,13 +3,15 @@ import { Ermit } from '../ermit';
 import { Directive } from '@angular/core';
 import * as $ from 'jquery';
 import {API_URL} from '../env';
+import * from '../../assets/visualization';
+import * as THREE from 'three';
+import OrbitControls from 'three-orbitcontrols';
 
 @Component({
   selector: 'app-ermit-form',
   templateUrl: './ermit-form.component.html',
-  styleUrls: ['./ermit-form.component.css'],
+  styleUrls: ['./ermit-form.component.css']
 })
-
 
 export class ErmitFormComponent implements OnInit {
 
@@ -60,6 +62,15 @@ export class ErmitFormComponent implements OnInit {
   static pct_shrub = 0;
   static data = {};
   static prettified_data = {};
+  static top_slope = 0;
+  static avg_slope = 0;
+  static climate_name = "";
+  static toe_slope = 0;
+  static rock_content = 0;
+  static soil_type = "";
+  static rain_events = 0;
+  static winter_events = 0;
+  static vegetation = "";
   public classReference = ErmitFormComponent;
 
   model = new Ermit(0, 50, 30, 20, 300, "../climates/al010831", 'l', "clay", "forest", ErmitFormComponent.pct_grass, ErmitFormComponent.pct_shrub, ErmitFormComponent.pct_bare);
@@ -69,25 +80,6 @@ export class ErmitFormComponent implements OnInit {
   showRunoffOverlay = false;
   showWinterRunoffOverlay  = false;
   showVegOverlay  = false;
-
-  onSubmit() {
-    this.ermit_sent = true;
-      $.ajax({
-        type: 'POST',
-        url: API_URL,
-        data: JSON.stringify(this.model),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (result) {
-          ErmitFormComponent.prettified_data = JSON.stringify(result, undefined, 2);
-          ErmitFormComponent.data = JSON.parse(JSON.stringify(result));
-        },
-        failure: function (errMsg) {
-          console.log(errMsg);
-        }
-      });
-
-  }
 
   onEdit() {
     ErmitFormComponent.data = {};
@@ -327,9 +319,37 @@ export class ErmitFormComponent implements OnInit {
     }
   }
 
+  onSubmit() {
+    this.ermit_sent = true;
+      $.ajax({
+        type: 'POST',
+        url: API_URL,
+        data: JSON.stringify(this.model),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (result) {
+          ErmitFormComponent.prettified_data = JSON.stringify(result, undefined, 2);
+          ErmitFormComponent.data = JSON.parse(JSON.stringify(result));
+          InitDemo(result, THREE, OrbitControls);
+          ErmitFormComponent.top_slope = parseInt(ErmitFormComponent.data["top_slope"]);
+          ErmitFormComponent.avg_slope = parseInt(ErmitFormComponent.data["avg_slope"]);
+          ErmitFormComponent.toe_slope = parseInt(ErmitFormComponent.data["toe_slope"]);
+          ErmitFormComponent.rock_content = parseInt(ErmitFormComponent.data["rock_content"]);
+          ErmitFormComponent.soil_type = ErmitFormComponent.data["soil_type"];
+          ErmitFormComponent.climate_name = ErmitFormComponent.data["climate_name"];
+          ErmitFormComponent.rain_events = parseInt(ErmitFormComponent.data["rain_events"]);
+          ErmitFormComponent.winter_events = parseInt(ErmitFormComponent.data["winter_events"]);
+          ErmitFormComponent.vegetation = ErmitFormComponent.data["vegetation"];
+        },
+        failure: function (errMsg) {
+          console.log(errMsg);
+        }
+      });
+  }
+
   constructor() { }
 
   public ngOnInit()
-  { }
+  {  }
 
 }

@@ -142,17 +142,52 @@
 </div>
 
 <div class="container" [hidden]="!classReference.prettified_data.length > 0">
-  <div class="row" style="margin: 50px auto">
-    <canvas></canvas>
+  <div class="row">
+    <table class="col-sm-12 table">
+      <thead>
+        <tr>
+          <th style="text-align: center" colspan="3">ERMiT Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Percentage Top Slope:</strong> {{classReference.top_slope}}%</td>
+          <td><strong>Percentage Middle Slope:</strong> {{classReference.avg_slope}}%</td>
+          <td><strong>Percentage Toe Slope:</strong> {{classReference.toe_slope}}%</td>
+        </tr>
+        <tr>
+          <td><strong>Climate:</strong> {{classReference.climate_name}}</td>
+          <td><strong>Vegetation:</strong> {{classReference.vegetation}}</td>
+          <td><strong>Percentage Rock Content:</strong> {{classReference.rock_content}}%</td>
+        </tr>
+        <tr>
+          <td><strong>Number of Rain Events in 100 years:</strong> {{classReference.rain_events}}</td>
+          <td><strong>Number of Winter Events in 100 years:</strong> {{classReference.winter_events}}</td>
+          <td><strong>Soil Type:</strong> {{classReference.soil_type}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="row" style="margin: 50px;text-align: center">
-    <h6 class="col-sm-12">{{classReference.prettified_data}}</h6>
+  <div class="row" style="margin: 20px;">
+    <canvas class="col-sm-12" [hidden]="!classReference.prettified_data.length > 0" style="width: 1000px; height: 500px" id= "Surface">
+      Graphic not supported by browser.
+    </canvas>
   </div>
-  <div class="row" style="margin: 50px auto; text-align: center">
+  <button class="overlayBtn btn btn-primary" (click)="onEdit()">Edit</button>
+  <div class="row" style="margin: 100px;text-align: center">
+    <div class="col-sm-12">
+      <button class="overlayBtn btn btn-info" (click)="changeLine()">2D Hillslope</button>
+      <button class="overlayBtn btn btn-info" (click)="waterOverlay()">Annual Precipitation</button>
+      <button class="overlayBtn btn btn-info" (click)="runoffOverlay()">Annual Runoff from Rainfall</button>
+      <button class="overlayBtn btn btn-info" (click)="winterRunoffOverlay()">Annual Snowmelt Runoff</button>
+      <button class="overlayBtn btn btn-info" (click)="vegetationOverlay()">Vegetation</button>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 30px; text-align: center">
     <div [hidden]="!showSlope">
-    <canvas id="line"></canvas>
-    <i><p id="sevText"></p></i>
-  </div>
+      <canvas id="line"></canvas>
+      <i><p id="sevText"></p></i>
+    </div>
     <div [hidden]="!showPrecipitationOverlay" class="bar">
       <div id="insidePrecipitation">
         <p id="precipitationText"></p>
@@ -175,14 +210,4 @@
       <p id="pct_bare_text"></p>
     </div>
   </div>
-  <div class="row" style="margin: 100px;text-align: center">
-    <div>
-      <button class="overlayBtn btn btn-info" (click)="changeLine()">2D Hillslope</button>
-      <button class="overlayBtn btn btn-info" (click)="waterOverlay()">Annual Precipitation</button>
-      <button class="overlayBtn btn btn-info" (click)="runoffOverlay()">Annual Runoff from Rainfall</button>
-      <button class="overlayBtn btn btn-info" (click)="winterRunoffOverlay()">Annual Snowmelt Runoff</button>
-      <button class="overlayBtn btn btn-info" (click)="vegetationOverlay()">Vegetation</button>
-    </div>
-  </div>
-  <button class="overlayBtn btn btn-primary" (click)="onEdit()">Edit</button>
 </div>
