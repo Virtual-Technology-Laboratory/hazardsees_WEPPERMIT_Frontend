@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Ermit } from '../ermit';
 import { Directive } from '@angular/core';
-import * as $ from 'jquery';
-import {API_URL} from '../env';
+import { API_URL } from '../env';
+import OrbitControls from 'three-orbitcontrols';
 import * from '../../assets/visualization';
 import * as THREE from 'three';
-import OrbitControls from 'three-orbitcontrols';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-ermit-form',
@@ -28,30 +28,38 @@ export class ErmitFormComponent implements OnInit {
 
   // Mapping what the user can select to the values that ERMiT works with
   cli_fn =
-    {'BIRMINGHAM WB AP AL': "../climates/al010831",
-    'CHARLESTON KAN AP WV': "../climates/wv461570",
-    'DENVER WB AP CO': "../climates/co052220",
-    'FLAGSTAFF WB AP AZ': "../climates/az023010",
-    'MOSCOW U OF I ID': "../climates/id106152",
-    'MOUNT SHASTA CA': "../climates/ca045983",
-    'SEXTON SUMMIT WB OR': "../climates/or357698"};
+    {
+      'BIRMINGHAM WB AP AL': "../climates/al010831",
+      'CHARLESTON KAN AP WV': "../climates/wv461570",
+      'DENVER WB AP CO': "../climates/co052220",
+      'FLAGSTAFF WB AP AZ': "../climates/az023010",
+      'MOSCOW U OF I ID': "../climates/id106152",
+      'MOUNT SHASTA CA': "../climates/ca045983",
+      'SEXTON SUMMIT WB OR': "../climates/or357698"
+    };
 
   severity =
-    {'High': 'h',
-    'Moderate': 'm',
-    'Low': 'l',
-    'Unburned': 'u'};
+    {
+      'High': 'h',
+      'Moderate': 'm',
+      'Low': 'l',
+      'Unburned': 'u'
+    };
 
   soil_type =
-    {'Clay Loam': "clay",
-    'Silt Loam': "silt",
-    'Sandy Loam': "sand",
-    'Loam': "loam"};
+    {
+      'Clay Loam': "clay",
+      'Silt Loam': "silt",
+      'Sandy Loam': "sand",
+      'Loam': "loam"
+    };
 
   vegetation =
-    {'Forest': "forest",
-    'Range': "range",
-    'Chaparral': "chap"};
+    {
+      'Forest': "forest",
+      'Range': "range",
+      'Chaparral': "chap"
+    };
 
   // Had to make these member variables so I would be able to access and change them:
   // 1. Depending on what vegetation is selected
@@ -78,8 +86,8 @@ export class ErmitFormComponent implements OnInit {
   showSlope = false;
   showPrecipitationOverlay = false;
   showRunoffOverlay = false;
-  showWinterRunoffOverlay  = false;
-  showVegOverlay  = false;
+  showWinterRunoffOverlay = false;
+  showVegOverlay = false;
 
   onEdit() {
     ErmitFormComponent.data = {};
@@ -88,7 +96,7 @@ export class ErmitFormComponent implements OnInit {
     this.showSlope = false;
     this.showPrecipitationOverlay = false;
     this.showRunoffOverlay = false;
-    this.showWinterRunoffOverlay  = false;
+    this.showWinterRunoffOverlay = false;
     this.showVegOverlay = false;
   }
 
@@ -102,7 +110,7 @@ export class ErmitFormComponent implements OnInit {
   // Sets the vegetation inputs to a default set of values based on the vegetation selected (e.g. forest, range, etc)
 
   set_pcts(vegetation) {
-    switch(vegetation) {
+    switch (vegetation) {
       case "forest":
         // Updating Angular Display (component class)
         ErmitFormComponent.pct_bare = 0;
@@ -142,14 +150,14 @@ export class ErmitFormComponent implements OnInit {
 
   waterOverlay() {
     var annual_precipitation = ErmitFormComponent.data["annual_precipitation"];
-    var percentagePrecipitation = parseFloat(ErmitFormComponent.data["annual_precipitation"])/60;
+    var percentagePrecipitation = parseFloat(ErmitFormComponent.data["annual_precipitation"]) / 60;
     var PrecipitationHeight = 150 * percentagePrecipitation;
-    document.getElementById("insidePrecipitation").style.height = PrecipitationHeight +"px";
-    document.getElementById("insidePrecipitation").style.marginTop = (140 - PrecipitationHeight)+"px";
+    document.getElementById("insidePrecipitation").style.height = PrecipitationHeight + "px";
+    document.getElementById("insidePrecipitation").style.marginTop = (140 - PrecipitationHeight) + "px";
     document.getElementById("precipitationText").innerHTML = annual_precipitation + " inches annual precipitation";
     if (annual_precipitation < 20) {
       document.getElementById("precipitationText").style.color = "black";
-      document.getElementById("precipitationText").style.paddingTop = 10 + PrecipitationHeight+"px";
+      document.getElementById("precipitationText").style.paddingTop = 10 + PrecipitationHeight + "px";
     } else {
       document.getElementById("precipitationText").style.paddingTop = "5px";
       document.getElementById("precipitationText").style.color = "white";
@@ -162,14 +170,14 @@ export class ErmitFormComponent implements OnInit {
   }
   runoffOverlay() {
     var annual_runoff_rain = ErmitFormComponent.data["annual_runoff_rain"];
-    var percentageRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_rain"])/16.5;
+    var percentageRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_rain"]) / 16.5;
     var runoffHeight = 150 * percentageRunoff;
-    document.getElementById("insideRunoff").style.height = runoffHeight +"px";
-    document.getElementById("insideRunoff").style.marginTop = (140 - runoffHeight)+"px";
+    document.getElementById("insideRunoff").style.height = runoffHeight + "px";
+    document.getElementById("insideRunoff").style.marginTop = (140 - runoffHeight) + "px";
     document.getElementById("runoffText").innerHTML = annual_runoff_rain + " inches annual runoff (rainfall)";
     if (annual_runoff_rain < 5) {
       document.getElementById("runoffText").style.color = "black";
-      document.getElementById("runoffText").style.paddingTop = 10 + runoffHeight+"px";
+      document.getElementById("runoffText").style.paddingTop = 10 + runoffHeight + "px";
     } else {
       document.getElementById("runoffText").style.paddingTop = "5px";
       document.getElementById("runoffText").style.color = "white";
@@ -182,14 +190,14 @@ export class ErmitFormComponent implements OnInit {
   }
   winterRunoffOverlay() {
     var annual_runoff_winter = ErmitFormComponent.data["annual_runoff_winter"];
-    var percentageWinterRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_winter"])/15;
+    var percentageWinterRunoff = parseFloat(ErmitFormComponent.data["annual_runoff_winter"]) / 15;
     var winterRunoffHeight = 150 * percentageWinterRunoff;
-    document.getElementById("insideWinterRunoff").style.height = winterRunoffHeight +"px";
-    document.getElementById("insideWinterRunoff").style.marginTop = (140 - winterRunoffHeight)+"px";
+    document.getElementById("insideWinterRunoff").style.height = winterRunoffHeight + "px";
+    document.getElementById("insideWinterRunoff").style.marginTop = (140 - winterRunoffHeight) + "px";
     document.getElementById("winterRunoffText").innerHTML = annual_runoff_winter + " inches annual runoff (snowmelt)";
     if (annual_runoff_winter < 5) {
       document.getElementById("winterRunoffText").style.color = "black";
-      document.getElementById("winterRunoffText").style.paddingTop = 10 + winterRunoffHeight+"px";
+      document.getElementById("winterRunoffText").style.paddingTop = 10 + winterRunoffHeight + "px";
     } else {
       document.getElementById("winterRunoffText").style.paddingTop = "5px";
       document.getElementById("winterRunoffText").style.color = "white";
@@ -214,7 +222,7 @@ export class ErmitFormComponent implements OnInit {
     var sev = ErmitFormComponent.data["severity"];
 
     const canvas = <HTMLCanvasElement>document.getElementById('line');
-    var ctx=canvas.getContext("2d");
+    var ctx = canvas.getContext("2d");
     var color;
     var lightcolor;
     var darkcolor;
@@ -224,45 +232,45 @@ export class ErmitFormComponent implements OnInit {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    switch(sev) {
-    case "l":
+    switch (sev) {
+      case "l":
         color = "#5BC85B";
         lightcolor = "#E7FFE7";
         darkcolor = "#137B13";
         document.getElementById("sevText").innerHTML = "Low Severity";
         break;
-    case "m":
+      case "m":
         color = "#FFFF5C";
         lightcolor = "#FEFEBF";
         darkcolor = " #FF8000";
         document.getElementById("sevText").innerHTML = "Moderate Severity";
         break;
-    case "h":
+      case "h":
         color = "#FF0000";
         lightcolor = "#FFACAC";
         darkcolor = "#820000";
         document.getElementById("sevText").innerHTML = "High Severity";
         break;
-    default:
+      default:
         color = "#333333";
         lightcolor = "#BDBDBD";
         darkcolor = "black";
         document.getElementById("sevText").innerHTML = "Unburned";
-      }
+    }
 
-    ctx.shadowColor=darkcolor;
+    ctx.shadowColor = darkcolor;
     ctx.beginPath();
-    ctx.moveTo(xInit+20,yInit+20);
-    ctx.lineTo(xTop+20,-1 * yTop+20);
-    ctx.lineTo(xAvg+20,-1 * yAvg+20);
-    ctx.lineTo(xToe+20,-1 * yToe+20);
-    ctx.shadowBlur=20;
-    var gradient=ctx.createLinearGradient(0,0,300,200);
-    gradient.addColorStop(0,lightcolor);
-    gradient.addColorStop(0.5,color);
-    gradient.addColorStop(1.0,darkcolor);
-    ctx.strokeStyle=gradient;
-    ctx.lineWidth=10;
+    ctx.moveTo(xInit + 20, yInit + 20);
+    ctx.lineTo(xTop + 20, -1 * yTop + 20);
+    ctx.lineTo(xAvg + 20, -1 * yAvg + 20);
+    ctx.lineTo(xToe + 20, -1 * yToe + 20);
+    ctx.shadowBlur = 20;
+    var gradient = ctx.createLinearGradient(0, 0, 300, 200);
+    gradient.addColorStop(0, lightcolor);
+    gradient.addColorStop(0.5, color);
+    gradient.addColorStop(1.0, darkcolor);
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = 10;
     ctx.stroke();
     if (this.showSlope) {
       this.showSlope = false;
@@ -273,7 +281,7 @@ export class ErmitFormComponent implements OnInit {
 
   vegetationOverlay() {
     const canvas = <HTMLCanvasElement>document.getElementById('veg');
-    var ctx=canvas.getContext("2d");
+    var ctx = canvas.getContext("2d");
     var pointSize = 5;
     var pct_grass = parseInt(ErmitFormComponent.data["pct_grass"]);
     var pct_bare = parseInt(ErmitFormComponent.data["pct_bare"]);
@@ -304,7 +312,7 @@ export class ErmitFormComponent implements OnInit {
       }
       document.getElementById("pct_shrub_text").innerHTML = pct_shrub + "% shrub";
     } else {
-        document.getElementById("pct_shrub_text").innerHTML = "0% shrub";
+      document.getElementById("pct_shrub_text").innerHTML = "0% shrub";
     }
     if (pct_bare > 0) {
       document.getElementById("pct_bare_text").innerHTML = pct_bare + "% bare";
@@ -321,35 +329,34 @@ export class ErmitFormComponent implements OnInit {
 
   onSubmit() {
     this.ermit_sent = true;
-      $.ajax({
-        type: 'POST',
-        url: API_URL,
-        data: JSON.stringify(this.model),
-        contentType: 'application/json',
-        dataType: 'json',
-        success: function (result) {
-          ErmitFormComponent.prettified_data = JSON.stringify(result, undefined, 2);
-          ErmitFormComponent.data = JSON.parse(JSON.stringify(result));
-          InitDemo(result, THREE, OrbitControls);
-          ErmitFormComponent.top_slope = parseInt(ErmitFormComponent.data["top_slope"]);
-          ErmitFormComponent.avg_slope = parseInt(ErmitFormComponent.data["avg_slope"]);
-          ErmitFormComponent.toe_slope = parseInt(ErmitFormComponent.data["toe_slope"]);
-          ErmitFormComponent.rock_content = parseInt(ErmitFormComponent.data["rock_content"]);
-          ErmitFormComponent.soil_type = ErmitFormComponent.data["soil_type"];
-          ErmitFormComponent.climate_name = ErmitFormComponent.data["climate_name"];
-          ErmitFormComponent.rain_events = parseInt(ErmitFormComponent.data["rain_events"]);
-          ErmitFormComponent.winter_events = parseInt(ErmitFormComponent.data["winter_events"]);
-          ErmitFormComponent.vegetation = ErmitFormComponent.data["vegetation"];
-        },
-        failure: function (errMsg) {
-          console.log(errMsg);
-        }
-      });
+    $.ajax({
+      type: 'POST',
+      url: API_URL,
+      data: JSON.stringify(this.model),
+      contentType: 'application/json',
+      dataType: 'json',
+      success: function(result) {
+        ErmitFormComponent.prettified_data = JSON.stringify(result, undefined, 2);
+        ErmitFormComponent.data = JSON.parse(JSON.stringify(result));
+        InitDemo(result, THREE, OrbitControls);
+        ErmitFormComponent.top_slope = parseInt(ErmitFormComponent.data["top_slope"]);
+        ErmitFormComponent.avg_slope = parseInt(ErmitFormComponent.data["avg_slope"]);
+        ErmitFormComponent.toe_slope = parseInt(ErmitFormComponent.data["toe_slope"]);
+        ErmitFormComponent.rock_content = parseInt(ErmitFormComponent.data["rock_content"]);
+        ErmitFormComponent.soil_type = ErmitFormComponent.data["soil_type"];
+        ErmitFormComponent.climate_name = ErmitFormComponent.data["climate_name"];
+        ErmitFormComponent.rain_events = parseInt(ErmitFormComponent.data["rain_events"]);
+        ErmitFormComponent.winter_events = parseInt(ErmitFormComponent.data["winter_events"]);
+        ErmitFormComponent.vegetation = ErmitFormComponent.data["vegetation"];
+      },
+      failure: function(errMsg) {
+        console.log(errMsg);
+      }
+    });
   }
 
   constructor() { }
 
-  public ngOnInit()
-  {  }
+  public ngOnInit() { }
 
 }
